@@ -77,16 +77,37 @@ PY
 install_audiosr() {
   local py
   local filtered_requirements
+  local utils_py
   py="$(python310)"
   filtered_requirements="$ROOT/work/tmp/audiosr-requirements-no-torch.txt"
+  utils_py="$SRC_DIR/AudioSR/audiosr/utils.py"
   mkdir -p "$(dirname "$filtered_requirements")"
   grep -Ev '^(--extra-index-url|torch==|torchvision==|torchaudio==)' "$SRC_DIR/AudioSR/requirements.txt" > "$filtered_requirements"
   "$py" -m venv "$ROOT/.venv-audio-audiosr"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install --upgrade pip wheel setuptools
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install "setuptools<81"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install torchcodec
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -r "$filtered_requirements"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -e "$SRC_DIR/AudioSR" --no-deps
+  "$ROOT/.venv-audio-audiosr/bin/python" - <<PY
+from pathlib import Path
+
+path = Path("$utils_py")
+text = path.read_text(encoding="utf-8")
+old = "        # Reshape waveform for soundfile\\n        data_to_save = waveform[i].T.cpu().numpy()\\n"
+new = """        # Reshape waveform for soundfile. Newer torch/torchaudio stacks may
+        # return NumPy here while older AudioSR expected a Torch tensor.
+        data_to_save = waveform[i].T
+        if hasattr(data_to_save, \"cpu\"):
+            data_to_save = data_to_save.cpu().numpy()
+        else:
+            data_to_save = np.asarray(data_to_save)
+"""
+if old in text:
+    path.write_text(text.replace(old, new), encoding="utf-8")
+print("AudioSR save compatibility patch checked:", path)
+PY
   echo "AudioSR env ready: $ROOT/.venv-audio-audiosr"
   echo "Run AudioSR from repo root with:"
   echo "  source .venv-audio-audiosr/bin/activate"
