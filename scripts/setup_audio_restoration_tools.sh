@@ -54,23 +54,42 @@ install_apollo() {
   py="$(python310)"
   "$py" -m venv "$ROOT/.venv-audio-apollo"
   "$ROOT/.venv-audio-apollo/bin/python" -m pip install --upgrade pip wheel setuptools
-  "$ROOT/.venv-audio-apollo/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+  "$ROOT/.venv-audio-apollo/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
   "$ROOT/.venv-audio-apollo/bin/python" -m pip install \
     numpy==1.26.3 scipy soundfile librosa==0.10.2.post1 hydra-core==1.3.2 \
     pytorch-lightning==2.2.1 torchmetrics==1.4.1 huggingface-hub==0.24.6 \
-    rich tqdm pyyaml omegaconf einops
-  "$ROOT/.venv-audio-apollo/bin/python" -m pip install -e "$SRC_DIR/Apollo"
+    rich tqdm pyyaml omegaconf einops fast-bss-eval torch-complex
+  "$ROOT/.venv-audio-apollo/bin/python" - <<PY
+from pathlib import Path
+import site
+repo = Path("$SRC_DIR/Apollo").resolve()
+for sp in site.getsitepackages():
+    path = Path(sp) / "apollo-local.pth"
+    path.write_text(str(repo) + "\\n", encoding="utf-8")
+print("Apollo PYTHONPATH shim installed for", repo)
+PY
   echo "Apollo env ready: $ROOT/.venv-audio-apollo"
+  echo "Run Apollo from repo root with:"
+  echo "  source .venv-audio-apollo/bin/activate"
+  echo "  python soft/ai_audio_tools/src/Apollo/inference.py --in_wav INPUT.wav --out_wav OUTPUT.wav"
 }
 
 install_audiosr() {
   local py
+  local filtered_requirements
   py="$(python310)"
+  filtered_requirements="$ROOT/work/tmp/audiosr-requirements-no-torch.txt"
+  mkdir -p "$(dirname "$filtered_requirements")"
+  grep -Ev '^(--extra-index-url|torch==|torchvision==|torchaudio==)' "$SRC_DIR/AudioSR/requirements.txt" > "$filtered_requirements"
   "$py" -m venv "$ROOT/.venv-audio-audiosr"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install --upgrade pip wheel setuptools
-  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -r "$SRC_DIR/AudioSR/requirements.txt"
-  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -e "$SRC_DIR/AudioSR"
+  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -r "$filtered_requirements"
+  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -e "$SRC_DIR/AudioSR" --no-deps
   echo "AudioSR env ready: $ROOT/.venv-audio-audiosr"
+  echo "Run AudioSR from repo root with:"
+  echo "  source .venv-audio-audiosr/bin/activate"
+  echo "  audiosr -i INPUT.wav -s OUTPUT_DIR --model_name basic -d cuda --ddim_steps 50"
 }
 
 check_tools() {
