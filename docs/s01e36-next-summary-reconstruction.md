@@ -236,6 +236,84 @@ The 50 fps AI remaster source needs `--rife-ncnn-num-frames 862`; default 2x
 RIFE produces 826 frames, which is correct for `48000/1001` but too short at
 `50/1`.
 
+## Alternate Southern Cross Source Comparison
+
+A later comparison package uses the Southern Cross source files from:
+
+`Robotech/The Super Dimension Cavalry Southern Cross (1984)/Season 1`
+
+This package is for review only. It does not replace the approved S01E36 ready
+segment and is not consumed by `episode-final-build`.
+
+Working folder:
+
+`work/review/S01E36_next_summary_southern_cross_source_001`
+
+Scene cuts are interpreted as `minutes:seconds:frame` at `30000/1001`. This is
+intentional because the supplied timecodes include frame values such as `28`,
+and some source files were exported as 29.97 fps or adaptive-rate derivatives.
+Where fixed-rate derivatives exist, use them:
+
+| Scene | Source | Timecode | Notes |
+| --- | --- | --- | --- |
+| 01 | `Super Dimension Cavalry Southern Cross - 1x13 - Triple Mirror-30fps.mp4` | `02:26:17` -> `02:28:20` | fixed 29.97 fps derivative |
+| 02 | `Super Dimension Cavalry Southern Cross - 1x10 - Outsider-24fps.mp4` | `15:47:04` -> `15:48:19` | fixed 23.976 fps derivative |
+| 03 | `Super Dimension Cavalry Southern Cross - 1x01 - Prisoner.mkv` | `24:04:21` -> `24:08:28` | original fixed 23.976 fps source |
+| 04 | `Super Dimension Cavalry Southern Cross - 1x12 - Lost Memory-24fps.mp4` | `13:17:27` -> `13:19:11` | fixed 23.976 fps derivative |
+| 05 | `Super Dimension Cavalry Southern Cross - 1x10 - Outsider-24fps.mp4` | `15:38:27` -> `15:41:21` | fixed 23.976 fps derivative |
+
+Build the comparison package:
+
+```bash
+python3 scripts/prepare_s01e36_next_summary_southern_cross_source.py --run
+```
+
+Outputs to review:
+
+- `assembled/S01E36_next_summary_southern_cross_source_review_24fps.mkv`
+- `assembled/S01E36_next_summary_southern_cross_source_review_24fps_padded_to_ready_audio.mkv`
+- `video_ai_tests/rife_southern_cross_padded_49fps_001/rife_southern_cross_padded_49fps_001_with_audio.mkv`
+- `video_ai_tests/rife_southern_cross_padded_50fps_001/rife_southern_cross_padded_50fps_001_with_audio.mkv`
+
+Important duration note:
+
+- The five raw Southern Cross scene ranges plus the same fade framing produce
+  about `14.056s` of video.
+- The approved current ready summary audio package is about `17.248s`.
+- The `*_padded_to_ready_audio*` files add black video at the end so the audio
+  package can be reviewed without cutting off. This padding is a diagnostic
+  accommodation, not proof that the source timecodes fully cover the old
+  summary.
+
+The interpolated comparison files were generated with RIFE NCNN/Vulkan, not
+ffmpeg motion interpolation. Codex needs escalated execution for this command
+so Vulkan sees the RTX GPU; inside the sandbox it falls back to `llvmpipe`.
+
+```bash
+python3 scripts/run_s01e36_next_summary_video_tests.py rife-ncnn \
+  --source work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_1440x1080_24fps_padded_to_ready_audio_lossless.mkv \
+  --input-video work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_1440x1080_24fps_padded_to_ready_audio_lossless.mkv \
+  --review-audio-source work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_review_24fps_padded_to_ready_audio.mkv \
+  --out-root work/review/S01E36_next_summary_southern_cross_source_001/video_ai_tests \
+  --label rife_southern_cross_padded_49fps_001 \
+  --rife-ncnn-model soft/ai_video_tools/bin/rife-ncnn-vulkan/rife-v4.6 \
+  --rife-ncnn-fps 48000/1001 \
+  --overwrite \
+  --run
+
+python3 scripts/run_s01e36_next_summary_video_tests.py rife-ncnn \
+  --source work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_1440x1080_24fps_padded_to_ready_audio_lossless.mkv \
+  --input-video work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_1440x1080_24fps_padded_to_ready_audio_lossless.mkv \
+  --review-audio-source work/review/S01E36_next_summary_southern_cross_source_001/assembled/S01E36_next_summary_southern_cross_source_review_24fps_padded_to_ready_audio.mkv \
+  --out-root work/review/S01E36_next_summary_southern_cross_source_001/video_ai_tests \
+  --label rife_southern_cross_padded_50fps_001 \
+  --rife-ncnn-model soft/ai_video_tools/bin/rife-ncnn-vulkan/rife-v4.6 \
+  --rife-ncnn-fps 50 \
+  --rife-ncnn-num-frames 862 \
+  --overwrite \
+  --run
+```
+
 ## Ready Episode Segment
 
 S01E36's next-episode summary is prepared as a full reusable video segment,
