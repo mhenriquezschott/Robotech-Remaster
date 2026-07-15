@@ -1,0 +1,2 @@
+# Bracket labels reviewed as acceptable. One label per line, without brackets.
+ROBOT

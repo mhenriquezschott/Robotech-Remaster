@@ -1,0 +1,71 @@
+{
+  "episode_id": "S01E36",
+  "sources": {
+    "episode_id": "S01E36",
+    "video": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E36.mp4",
+    "eng_51": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E36.track00(eng).ac3",
+    "spa1": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E36.track01(spa1).ac3",
+    "spa2": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E36.track02(spa2).ac3"
+  },
+  "spanish_source_type": "stereo_likely",
+  "sync": {
+    "initial_offset_ms": 0,
+    "drift_ratio": 1.0,
+    "segments": []
+  },
+  "levels": {
+    "spanish_dialogue_gain_db": 0.0,
+    "center_bed_gain_db": -6.0
+  },
+  "lfe_policy": "unchanged",
+  "models": {
+    "spa1_dialogue_separator": null,
+    "eng_center_devoice": null,
+    "speech_enhancement": null
+  },
+  "selected_chain": null,
+  "qc_status": "pending",
+  "notes": "",
+  "analysis": {
+    "stereo": {
+      "scope": "full_episode",
+      "seconds_analyzed": 1313.504,
+      "spa1_correlation": 0.9406782159564735,
+      "spa1_balance_db_left_minus_right": 1.4199693729361649
+    }
+  },
+  "policy": {
+    "target_spanish_track": "spa1",
+    "spa2_role": "reference_only_do_not_restore",
+    "restore_strategy": "extract_spa1_dialogue_improve_voice_replace_eng_center_dialogue",
+    "final_mux_spa2": "include_original_unmodified",
+    "final_mux_spa1": "include_original_unmodified_for_preservation"
+  },
+  "parameters": {
+    "spa1_pre_clean": {
+      "highpass_hz": 70,
+      "lowpass_hz": 12000,
+      "hum_filter_hz": null,
+      "denoise_strength": null
+    },
+    "dialogue_extraction": {
+      "prefer_full_episode_source_classification": true,
+      "treat_uncertain_spa1_as_stereo": true,
+      "manual_review_required_before_downmix": true
+    },
+    "dialogue_mix": {
+      "dialogue_limiter": true,
+      "max_peak_db": -1.0,
+      "target_loudness_lufs": null
+    },
+    "final_mux": {
+      "include_video": true,
+      "include_original_english_51": true,
+      "include_original_spa1": true,
+      "include_original_spa2": true,
+      "include_restored_spa1_51": true,
+      "restored_track_title": "Doblaje Original Latinoamericano Restaurado (5.1)",
+      "preserve_source_metadata": true
+    }
+  }
+}

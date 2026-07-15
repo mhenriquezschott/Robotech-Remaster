@@ -1,0 +1,17 @@
+# Dedicated ASR environment for speech maps / word timestamps.
+#
+# Suggested env:
+#   python3.12 -m venv .venv-asr
+#   source .venv-asr/bin/activate
+#   python -m pip install --upgrade pip setuptools wheel
+#   python -m pip install -r requirements-asr.txt
+#
+# WhisperX is the preferred engine because it combines Whisper/faster-whisper
+# transcription with forced alignment for word-level timings.
+whisperx
+
+# Fallback/simple engine. Useful if WhisperX alignment deps are temporarily
+# troublesome, or when approximate word timestamps are enough.
+faster-whisper
+
+soundfile

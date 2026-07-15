@@ -1,0 +1,29 @@
+{
+  "model_id": "gemma_3_27b_it",
+  "display_name": "Gemma 3 27B IT subtitle translator",
+  "repo_id": "google/gemma-3-27b-it",
+  "revision": null,
+  "backend": "transformers",
+  "deployment_format": "hf_transformers_bitsandbytes_4bit_nf4",
+  "torch_dtype": "bfloat16",
+  "device": "cuda:0",
+  "trust_remote_code": false,
+  "prompt_format": "chat_template",
+  "local_files_only": true,
+  "extra_eos_tokens": ["<end_of_turn>"],
+  "quantization": {
+    "method": "bitsandbytes",
+    "load_in_4bit": true,
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_compute_dtype": "bfloat16",
+    "bnb_4bit_use_double_quant": true
+  },
+  "generation": {
+    "max_new_tokens": 1024,
+    "do_sample": true,
+    "temperature": 0.15,
+    "top_p": 0.9,
+    "stop_strings": []
+  },
+  "notes": "Use with scripts/run_subtitle_translation_hf.py. Requires bitsandbytes and a CUDA-capable LLM env."
+}

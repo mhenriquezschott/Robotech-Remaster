@@ -1,0 +1,13 @@
+# Dedicated local subtitle-translation environment.
+# Keep separate from .venv-separation/.venv-deepfilter to avoid audio package conflicts.
+
+accelerate>=0.30
+bitsandbytes>=0.43
+huggingface-hub>=0.23
+kernels==0.12.0
+packaging>=24
+protobuf>=4.25
+safetensors>=0.4
+sentencepiece>=0.2
+torch>=2.3
+transformers>=4.41

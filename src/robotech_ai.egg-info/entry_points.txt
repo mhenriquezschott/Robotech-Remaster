@@ -1,0 +1,3 @@
+[console_scripts]
+robotech-ai = robotech_ai.cli:main
+robotech-repair-tool = robotech_ai_repair.app:main

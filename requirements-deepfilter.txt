@@ -1,0 +1,11 @@
+# Speech enhancement experiment tool.
+#
+# Install in a dedicated DeepFilterNet environment:
+#   python -m pip install -r requirements-deepfilter.txt
+#
+# Do not install audio-separator in the same environment. Current releases pin
+# incompatible numpy versions.
+#
+# Also avoid upgrading wheel in this env unless needed. New wheel releases can
+# conflict with DeepFilterNet's packaging<24 dependency on Python 3.13.
+deepfilternet

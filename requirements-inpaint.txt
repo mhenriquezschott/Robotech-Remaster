@@ -1,0 +1,52 @@
+# Dedicated AI audio inpainting environment.
+#
+# Stable Audio Tools currently requires Python >=3.10,<3.11 and pins its own
+# Torch/Torchaudio stack. Do not install this into .venv-separation,
+# .venv-llm, or the system Python.
+#
+# Recommended setup from the project root. Keep uv's Python/cache data inside
+# this project so the setup is reproducible and does not depend on the user's
+# global Python layout:
+#
+#   UV_CACHE_DIR=$PWD/.uv-cache \
+#   UV_PYTHON_INSTALL_DIR=$PWD/.uv-python \
+#   uv venv --python 3.10 .venv-inpaint
+#
+#   UV_CACHE_DIR=$PWD/.uv-cache \
+#   UV_PYTHON_INSTALL_DIR=$PWD/.uv-python \
+#   uv pip install --python .venv-inpaint/bin/python \
+#     -e soft/ai_audio_inpaint/stable-audio-tools \
+#     soundfile>=0.12 \
+#     pytorch_lightning==2.5.5 \
+#     torchmetrics==0.11.4
+#
+# RTX 5090 / sm_120 note:
+# stable-audio-tools pins torch==2.7.1+cu126, but that build cannot execute on
+# the RTX 5090. After the editable install, upgrade this env's Torch stack:
+#
+#   UV_CACHE_DIR=$PWD/.uv-cache \
+#   UV_PYTHON_INSTALL_DIR=$PWD/.uv-python \
+#   uv pip install --python .venv-inpaint/bin/python --upgrade \
+#     torch==2.12.1 \
+#     torchvision==0.27.1 \
+#     torchaudio==2.11.0
+#
+# If Python 3.10 is not installed locally, uv can usually download/manage it.
+# Model downloads may require accepting the Hugging Face model terms and being
+# logged in with:
+#
+#   .venv-inpaint/bin/huggingface-cli login
+#
+# This file is documentation-first because the editable local package contains
+# the exact dependency pins.
+
+-e soft/ai_audio_inpaint/stable-audio-tools
+soundfile>=0.12
+pytorch_lightning==2.5.5
+torchmetrics==0.11.4
+
+# Intentionally overrides stable-audio-tools' older torch==2.7.1+cu126 pin so
+# RTX 5090 / sm_120 can run the model.
+torch==2.12.1
+torchvision==0.27.1
+torchaudio==2.11.0

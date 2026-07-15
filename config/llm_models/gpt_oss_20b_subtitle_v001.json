@@ -1,0 +1,30 @@
+{
+  "model_id": "gpt_oss_20b",
+  "display_name": "gpt-oss-20b subtitle translator",
+  "repo_id": "openai/gpt-oss-20b",
+  "revision": null,
+  "backend": "transformers",
+  "deployment_format": "hf_transformers_native_mxfp4",
+  "torch_dtype": "auto",
+  "device": "cuda:0",
+  "trust_remote_code": true,
+  "prompt_format": "chat_template",
+  "output_format": "harmony",
+  "local_files_only": true,
+  "required_python_packages": [
+    {
+      "name": "kernels",
+      "import_name": "kernels",
+      "version_spec": "==0.12.0",
+      "reason": "Keeps gpt-oss native MXFP4 weights compressed instead of expanding to bf16."
+    }
+  ],
+  "generation": {
+    "max_new_tokens": 1536,
+    "do_sample": false,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "stop_strings": []
+  },
+  "notes": "Use with scripts/run_subtitle_translation_hf.py. Designed for offline local Hugging Face cache execution, no Ollama service."
+}

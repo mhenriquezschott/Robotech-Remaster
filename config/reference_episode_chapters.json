@@ -1,0 +1,1376 @@
+{
+  "kind": "robotech_reference_episode_chapters",
+  "description": "Episode-relative chapter starts harvested once from reference Robotech MKVs. Final builds use these local values and do not need the reference files mounted.",
+  "reference_root": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps",
+  "pattern": "Robotech-S01E*.mkv",
+  "episodes": {
+    "S01E01": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E01.mkv",
+      "reference_opening_end_seconds": 92.300542,
+      "reference_end_credit_start_seconds": 1394.518125,
+      "reference_episode_duration_seconds": 1302.217583,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 620.787
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.300542,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.300542,
+          "end_seconds": 713.087375,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 713.087375,
+          "end_seconds": 1394.518125,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1394.518125,
+          "end_seconds": 1455.075,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E02": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E02.mkv",
+      "reference_opening_end_seconds": 92.300542,
+      "reference_end_credit_start_seconds": 1391.8905,
+      "reference_episode_duration_seconds": 1299.589958,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 676.217
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.300542,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.300542,
+          "end_seconds": 768.51775,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 768.51775,
+          "end_seconds": 1391.8905,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1391.8905,
+          "end_seconds": 1443.69225,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E03": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E03.mkv",
+      "reference_opening_end_seconds": 92.092,
+      "reference_end_credit_start_seconds": 1386.385,
+      "reference_episode_duration_seconds": 1294.293,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 626.376
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.092,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.092,
+          "end_seconds": 718.46775,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 718.46775,
+          "end_seconds": 1386.385,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1386.385,
+          "end_seconds": 1438.18675,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E04": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E04.mkv",
+      "reference_opening_end_seconds": 93.384958,
+      "reference_end_credit_start_seconds": 1394.851792,
+      "reference_episode_duration_seconds": 1301.466834,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 586.878
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.384958,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.384958,
+          "end_seconds": 680.262917,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 680.262917,
+          "end_seconds": 1394.851792,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1394.851792,
+          "end_seconds": 1446.778667,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E05": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E05.mkv",
+      "reference_opening_end_seconds": 92.967875,
+      "reference_end_credit_start_seconds": 1370.160458,
+      "reference_episode_duration_seconds": 1277.192583,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 524.858
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.967875,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.967875,
+          "end_seconds": 617.825542,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 617.825542,
+          "end_seconds": 1370.160458,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1370.160458,
+          "end_seconds": 1421.253167,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E06": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E06.mkv",
+      "reference_opening_end_seconds": 92.5925,
+      "reference_end_credit_start_seconds": 1371.286583,
+      "reference_episode_duration_seconds": 1278.694083,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 575.325
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.5925,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.5925,
+          "end_seconds": 667.91725,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 667.91725,
+          "end_seconds": 1371.286583,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1371.286583,
+          "end_seconds": 1423.17175,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E07": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E07.mkv",
+      "reference_opening_end_seconds": 92.84275,
+      "reference_end_credit_start_seconds": 1381.12975,
+      "reference_episode_duration_seconds": 1288.287,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 534.951
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.84275,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.84275,
+          "end_seconds": 627.793833,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 627.793833,
+          "end_seconds": 1381.12975,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1381.12975,
+          "end_seconds": 1432.889792,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E08": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E08.mkv",
+      "reference_opening_end_seconds": 93.34325,
+      "reference_end_credit_start_seconds": 1355.270583,
+      "reference_episode_duration_seconds": 1261.927333,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 606.272
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.34325,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.34325,
+          "end_seconds": 699.615583,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 699.615583,
+          "end_seconds": 1355.270583,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1355.270583,
+          "end_seconds": 1407.15575,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E09": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E09.mkv",
+      "reference_opening_end_seconds": 92.258833,
+      "reference_end_credit_start_seconds": 1358.440417,
+      "reference_episode_duration_seconds": 1266.181584,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 588.755
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.258833,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.258833,
+          "end_seconds": 681.013667,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 681.013667,
+          "end_seconds": 1358.440417,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1358.440417,
+          "end_seconds": 1410.117042,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E10": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E10.mkv",
+      "reference_opening_end_seconds": 92.133708,
+      "reference_end_credit_start_seconds": 1374.373,
+      "reference_episode_duration_seconds": 1282.239292,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 663.246
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.133708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.133708,
+          "end_seconds": 755.379625,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 755.379625,
+          "end_seconds": 1374.373,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1374.373,
+          "end_seconds": 1426.216458,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E11": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E11.mkv",
+      "reference_opening_end_seconds": 92.717625,
+      "reference_end_credit_start_seconds": 1319.109458,
+      "reference_episode_duration_seconds": 1226.391833,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 584.834
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.717625,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.717625,
+          "end_seconds": 677.551875,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 677.551875,
+          "end_seconds": 1319.109458,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1319.109458,
+          "end_seconds": 1370.8695,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E12": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E12.mkv",
+      "reference_opening_end_seconds": 93.051292,
+      "reference_end_credit_start_seconds": 1390.430708,
+      "reference_episode_duration_seconds": 1297.379416,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 617.951
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.051292,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.051292,
+          "end_seconds": 711.001958,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 711.001958,
+          "end_seconds": 1390.430708,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1390.430708,
+          "end_seconds": 1442.274167,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E13": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E13.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1365.155458,
+      "reference_episode_duration_seconds": 1272.813208,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 587.128
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 679.470458,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 679.470458,
+          "end_seconds": 1365.155458,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1365.155458,
+          "end_seconds": 1417.082333,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E14": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E14.mkv",
+      "reference_opening_end_seconds": 92.5925,
+      "reference_end_credit_start_seconds": 1352.351,
+      "reference_episode_duration_seconds": 1259.7585,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 630.63
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.5925,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.5925,
+          "end_seconds": 723.2225,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 723.2225,
+          "end_seconds": 1352.351,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1352.351,
+          "end_seconds": 1404.256,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E15": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E15.mkv",
+      "reference_opening_end_seconds": 92.300542,
+      "reference_end_credit_start_seconds": 1371.661958,
+      "reference_episode_duration_seconds": 1279.361416,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 594.052
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.300542,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.300542,
+          "end_seconds": 686.352333,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 686.352333,
+          "end_seconds": 1371.661958,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1371.661958,
+          "end_seconds": 1423.488,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E16": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E16.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1378.335292,
+      "reference_episode_duration_seconds": 1285.993042,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 613.488
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 705.830125,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 705.830125,
+          "end_seconds": 1378.335292,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1378.335292,
+          "end_seconds": 1430.528,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E17": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E17.mkv",
+      "reference_opening_end_seconds": 92.425667,
+      "reference_end_credit_start_seconds": 1391.014625,
+      "reference_episode_duration_seconds": 1298.588958,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 644.686
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.425667,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.425667,
+          "end_seconds": 737.111375,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 737.111375,
+          "end_seconds": 1391.014625,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1391.014625,
+          "end_seconds": 1442.848,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E18": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E18.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1379.252875,
+      "reference_episode_duration_seconds": 1286.910625,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 641.14
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 733.48275,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 733.48275,
+          "end_seconds": 1379.252875,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1379.252875,
+          "end_seconds": 1430.971208,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E19": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E19.mkv",
+      "reference_opening_end_seconds": 93.5935,
+      "reference_end_credit_start_seconds": 1377.959917,
+      "reference_episode_duration_seconds": 1284.366417,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 651.067
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.5935,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.5935,
+          "end_seconds": 744.660583,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 744.660583,
+          "end_seconds": 1377.959917,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1377.959917,
+          "end_seconds": 1429.761667,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E20": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E20.mkv",
+      "reference_opening_end_seconds": 91.84175,
+      "reference_end_credit_start_seconds": 1363.653958,
+      "reference_episode_duration_seconds": 1271.812208,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 626.376
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 91.84175,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 91.84175,
+          "end_seconds": 718.2175,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 718.2175,
+          "end_seconds": 1363.653958,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1363.653958,
+          "end_seconds": 1415.648,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E21": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E21.mkv",
+      "reference_opening_end_seconds": 93.009583,
+      "reference_end_credit_start_seconds": 1361.943917,
+      "reference_episode_duration_seconds": 1268.934334,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 541.875
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.009583,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.009583,
+          "end_seconds": 634.88425,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 634.88425,
+          "end_seconds": 1361.943917,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1361.943917,
+          "end_seconds": 1430.496,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E22": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E22.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1375.957917,
+      "reference_episode_duration_seconds": 1283.615667,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 613.863
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 706.2055,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 706.2055,
+          "end_seconds": 1375.957917,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1375.957917,
+          "end_seconds": 1430.432,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E23": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E23.mkv",
+      "reference_opening_end_seconds": 92.759333,
+      "reference_end_credit_start_seconds": 1381.463417,
+      "reference_episode_duration_seconds": 1288.704084,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 656.739
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.759333,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.759333,
+          "end_seconds": 749.49875,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 749.49875,
+          "end_seconds": 1381.463417,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1381.463417,
+          "end_seconds": 1433.68225,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E24": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E24.mkv",
+      "reference_opening_end_seconds": 92.425667,
+      "reference_end_credit_start_seconds": 1391.598542,
+      "reference_episode_duration_seconds": 1299.172875,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 582.248
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.425667,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.425667,
+          "end_seconds": 674.674,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 674.674,
+          "end_seconds": 1391.598542,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1391.598542,
+          "end_seconds": 1443.608833,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E25": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E25.mkv",
+      "reference_opening_end_seconds": 93.134708,
+      "reference_end_credit_start_seconds": 1392.933208,
+      "reference_episode_duration_seconds": 1299.7985,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 678.303
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.134708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.134708,
+          "end_seconds": 771.437333,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 771.437333,
+          "end_seconds": 1392.933208,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1392.933208,
+          "end_seconds": 1444.609833,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E26": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E26.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1402.943208,
+      "reference_episode_duration_seconds": 1310.600958,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 596.429
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 688.771417,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 688.771417,
+          "end_seconds": 1402.943208,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1402.943208,
+          "end_seconds": 1454.744958,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E27": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E27.mkv",
+      "reference_opening_end_seconds": 93.134708,
+      "reference_end_credit_start_seconds": 1412.119042,
+      "reference_episode_duration_seconds": 1318.984334,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 579.871
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.134708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.134708,
+          "end_seconds": 673.005667,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 673.005667,
+          "end_seconds": 1412.119042,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1412.119042,
+          "end_seconds": 1463.920792,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E28": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E28.mkv",
+      "reference_opening_end_seconds": 91.800042,
+      "reference_end_credit_start_seconds": 1398.021625,
+      "reference_episode_duration_seconds": 1306.221583,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 682.307
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 91.800042,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 91.800042,
+          "end_seconds": 774.106667,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 774.106667,
+          "end_seconds": 1398.021625,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1398.021625,
+          "end_seconds": 1449.824,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E29": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E29.mkv",
+      "reference_opening_end_seconds": 94.135708,
+      "reference_end_credit_start_seconds": 1380.754375,
+      "reference_episode_duration_seconds": 1286.618667,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 619.661
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 94.135708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 94.135708,
+          "end_seconds": 713.796417,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 713.796417,
+          "end_seconds": 1380.754375,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1380.754375,
+          "end_seconds": 1432.704,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E30": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E30.mkv",
+      "reference_opening_end_seconds": 92.34225,
+      "reference_end_credit_start_seconds": 1353.310292,
+      "reference_episode_duration_seconds": 1260.968042,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 604.02
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.34225,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.34225,
+          "end_seconds": 696.362333,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 696.362333,
+          "end_seconds": 1353.310292,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1353.310292,
+          "end_seconds": 1405.237167,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E31": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E31.mkv",
+      "reference_opening_end_seconds": 93.134708,
+      "reference_end_credit_start_seconds": 1399.272875,
+      "reference_episode_duration_seconds": 1306.138167,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 647.313
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.134708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.134708,
+          "end_seconds": 740.448042,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 740.448042,
+          "end_seconds": 1399.272875,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1399.272875,
+          "end_seconds": 1451.36,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E32": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E32.mkv",
+      "reference_opening_end_seconds": 92.5925,
+      "reference_end_credit_start_seconds": 1385.717667,
+      "reference_episode_duration_seconds": 1293.125167,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 639.43
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.5925,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.5925,
+          "end_seconds": 732.022958,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 732.022958,
+          "end_seconds": 1385.717667,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1385.717667,
+          "end_seconds": 1437.92,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E33": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E33.mkv",
+      "reference_opening_end_seconds": 93.134708,
+      "reference_end_credit_start_seconds": 1380.379,
+      "reference_episode_duration_seconds": 1287.244292,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 549.174
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.134708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.134708,
+          "end_seconds": 642.308333,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 642.308333,
+          "end_seconds": 1380.379,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1380.379,
+          "end_seconds": 1432.32,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E34": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E34.mkv",
+      "reference_opening_end_seconds": 93.134708,
+      "reference_end_credit_start_seconds": 1401.316583,
+      "reference_episode_duration_seconds": 1308.181875,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 598.556
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 93.134708,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 93.134708,
+          "end_seconds": 691.691,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 691.691,
+          "end_seconds": 1401.316583,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1401.316583,
+          "end_seconds": 1453.076625,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E35": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E35.mkv",
+      "reference_opening_end_seconds": 92.884458,
+      "reference_end_credit_start_seconds": 1402.275875,
+      "reference_episode_duration_seconds": 1309.391417,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 653.862
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.884458,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.884458,
+          "end_seconds": 746.746,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 746.746,
+          "end_seconds": 1402.275875,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1402.275875,
+          "end_seconds": 1454.816,
+          "title": "Chapter 04"
+        }
+      ]
+    },
+    "S01E36": {
+      "source_path": "/mnt/usb-Seagate_Expansion_HDD_00000000NT17VSPP-0:0-part2/Multimedia/Videos/Series/Robotech_Bluraywithoriginalspanishdubengandnewspanish/Bluray/Season01-Macross/eps/Robotech-S01E36.mkv",
+      "reference_opening_end_seconds": 92.967875,
+      "reference_end_credit_start_seconds": 1406.863792,
+      "reference_episode_duration_seconds": 1313.895917,
+      "episode_chapters": [
+        {
+          "title": "Episode",
+          "start_seconds": 0.0
+        },
+        {
+          "title": "Episode Part 2",
+          "start_seconds": 590.381
+        }
+      ],
+      "raw_chapters": [
+        {
+          "start_seconds": 0.0,
+          "end_seconds": 92.967875,
+          "title": "Chapter 01"
+        },
+        {
+          "start_seconds": 92.967875,
+          "end_seconds": 683.349333,
+          "title": "Chapter 02"
+        },
+        {
+          "start_seconds": 683.349333,
+          "end_seconds": 1406.863792,
+          "title": "Chapter 03"
+        },
+        {
+          "start_seconds": 1406.863792,
+          "end_seconds": 1458.623833,
+          "title": "Chapter 04"
+        }
+      ]
+    }
+  }
+}

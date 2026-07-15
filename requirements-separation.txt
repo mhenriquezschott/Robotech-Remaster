@@ -1,0 +1,10 @@
+# Voice/source separation tools.
+#
+# Install in a dedicated separation environment:
+#   python -m pip install -r requirements-separation.txt
+#
+# Do not install DeepFilterNet in the same environment. Current releases pin
+# incompatible numpy versions.
+demucs
+audio-separator[cpu]
+torchcodec

@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: robotech-ai
+Version: 0.1.0
+Summary: Stepwise Robotech audio restoration workflow controller
+Requires-Python: >=3.10

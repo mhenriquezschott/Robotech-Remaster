@@ -1,0 +1,29 @@
+# Runtime/output folders
+work/
+logs/
+final/
+checkpoints/
+
+# Large media/source assets
+Robotech/
+generated_audio/
+train/
+
+# Local tool repos and downloaded models
+soft/
+
+# Python environments and caches
+.venv*/
+.uv-cache/
+.uv-python/
+__pycache__/
+*.py[cod]
+
+# Local sidecar git database used because .git is a mounted placeholder here
+.git_repo/
+
+# Local scratch notes
+pendings.txt
+usefulcommands.txt
+info.txt
+

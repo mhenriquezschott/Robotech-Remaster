@@ -1,0 +1,3 @@
+# Keep ClearVoice isolated from .venv-separation.
+# audio-separator currently needs numpy>=2, while ClearVoice requires numpy<2.
+-e ./soft/ClearerVoice-Studio/clearvoice

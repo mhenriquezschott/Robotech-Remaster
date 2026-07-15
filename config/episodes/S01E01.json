@@ -1,0 +1,145 @@
+{
+  "episode_id": "S01E01",
+  "sources": {
+    "episode_id": "S01E01",
+    "video": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E01.mp4",
+    "eng_51": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E01.track00(eng).ac3",
+    "spa1": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E01.track01(spa1).ac3",
+    "spa2": "Robotech/bluraytrimcrop/MacrossSaga/Robotech-S01E01.track02(spa2).ac3"
+  },
+  "spanish_source_type": "fake_or_narrow_stereo_likely",
+  "sync": {
+    "initial_offset_ms": 0,
+    "drift_ratio": 1.0,
+    "segments": []
+  },
+  "levels": {
+    "spanish_dialogue_gain_db": 0.0,
+    "center_bed_gain_db": -6.0
+  },
+  "audio_start_policy": "silence_first_0.5_seconds_all_final_audio_tracks_without_trimming",
+  "models": {
+    "spa1_dialogue_separator": "melband_roformer_instvoc_duality_v1.ckpt",
+    "eng_center_devoice": "melband_roformer_instvoc_duality_v1.ckpt",
+    "speech_enhancement": "broadcast_strong",
+    "spa1_fullmix_restoration": "vhs_broadcast_full"
+  },
+  "selected_chain": {
+    "status": "provisional_lead_needs_all_window_validation",
+    "spa1_pre_clean": {
+      "variant": "light",
+      "source_mode": "stereo"
+    },
+    "dialogue_separator": {
+      "tool": "audio-separator",
+      "model": "melband_roformer_instvoc_duality_v1.ckpt",
+      "sample_rate": 48000,
+      "single_stem": "Vocals"
+    },
+    "post_extraction_enhancement": {
+      "status": "provisional",
+      "variant": "broadcast_strong",
+      "notes": "broadcast_strong is preferred because it preserves more voice richness/body than gate/denoise variants while still improving strength and presence with less saturation than speech_level."
+    },
+    "runner_up_models": [
+      "melband_roformer_instvox_duality_v2.ckpt",
+      "MDX23C-8KFFT-InstVoc_HQ.ckpt"
+    ],
+    "evidence": [
+      {
+        "review_dir": "work/review/S01E01_more_singles_001_02_00-15-00",
+        "note": "v1 had clean voice extraction with music removed; v2 close; MDX23C preserves voice body but less clean here."
+      },
+      {
+        "review_dir": "work/review/S01E01_more_singles_001_01_00-13-00",
+        "note": "v1 removed side tech noises and reduced siren more than other candidates, though strong siren tone remains because it overlaps vocal-like bands."
+      },
+      {
+        "review_dir": "work/review/S01E01_clearvoice_001",
+        "note": "ClearVoice SE had no noticeable benefit; SR variants added artificial pitch/brightness and artifacts, so AI super-resolution is rejected for now."
+      },
+      {
+        "review_dir": "work/review/S01E01_broadcast_tune_001",
+        "note": "broadcast_strong is the current enhancement lead over speech_level because it keeps good voice power with slightly less saturation. Tiny between-word residue remains visible in Audacity."
+      },
+      {
+        "review_dir": "work/review/S01E01_floor_cleanup_001",
+        "note": "Initial soft gate/FFT/wavelet floor cleanup did not visibly reduce the between-word residue. Next test moves the gate before speech leveling and uses a stronger threshold ladder."
+      },
+      {
+        "review_dir": "work/review/S01E01_gate_ladder_001",
+        "note": "gate_pre_level_high is a good candidate: it reduces visible residue better than lower thresholds without being clearly over-aggressive. Further bracketing around this threshold is needed."
+      },
+      {
+        "review_dir": "work/review/S01E01_gate_high_tune_001",
+        "note": "Bracketing around gate_pre_level_high did not visibly improve the waveform floor. Switch to compand/downward-expander tests before deciding whether to stop chasing visual flatness."
+      },
+    {
+      "review_dir": "work/review/S01E01_expander_floor_001",
+      "note": "Compand/downward-expander tests were less good than gate_pre_level_high_denoise; do not pursue expander floor cleanup unless later full-episode evidence changes this."
+    },
+    {
+      "review_dir": "work/review/S01E01_gate_denoise_validation_001",
+      "note": "gate_pre_level_high_denoise flattened some silence sections but removed voice richness. Prefer broadcast_strong to preserve maximum old Spanish voice information."
+    }
+    ],
+    "discarded_or_lower_priority": [
+      "default_bs_roformer",
+      "Kim_Vocal_2.onnx",
+      "Kim+MDX23C ensembles",
+      "Kim/MDX23C cascades"
+    ]
+  },
+  "qc_status": "lab_validation_in_progress",
+  "notes": "Current lead for old spa1 voice extraction is MelBand RoFormer InstVoc Duality v1. Current post-extraction enhancement lead is broadcast_strong because it preserves more voice richness/body than stronger cleanup variants. Siren-like effects are tracked as diagnostics but not the main target; final 5.1 bed should retain matching effects from destination audio.",
+  "analysis": {
+    "stereo": {
+      "scope": "full_episode",
+      "seconds_analyzed": 1301.824,
+      "spa1_correlation": 0.990308568248912,
+      "spa1_balance_db_left_minus_right": -0.008735379372643244
+    }
+  },
+  "policy": {
+    "target_spanish_track": "spa1",
+    "spa2_role": "reference_only_do_not_restore",
+    "restore_strategy": "extract_spa1_dialogue_improve_voice_replace_eng_center_dialogue",
+    "final_mux_spa2": "include_original_unmodified",
+    "final_mux_spa1": "include_restored_old_stereo_vhs_broadcast_full_for_preservation_review"
+  },
+  "parameters": {
+    "spa1_pre_clean": {
+      "highpass_hz": 70,
+      "lowpass_hz": 12000,
+      "hum_filter_hz": null,
+      "denoise_strength": null
+    },
+    "dialogue_extraction": {
+      "prefer_full_episode_source_classification": true,
+      "treat_uncertain_spa1_as_stereo": true,
+      "manual_review_required_before_downmix": true
+    },
+    "dialogue_mix": {
+      "dialogue_limiter": true,
+      "max_peak_db": -1.0,
+      "target_loudness_lufs": null
+    },
+    "final_mux": {
+      "include_video": true,
+      "include_original_english_51": true,
+      "include_restored_spa1_old_stereo": true,
+      "include_original_spa1": false,
+      "include_original_spa2": true,
+      "include_restored_spa1_51": true,
+      "audio_order": [
+        "english_original_51",
+        "spanish_restored_51_default",
+        "spanish1_restored_old_stereo",
+        "spanish2_original_stereo"
+      ],
+      "restored_track_title": "Doblaje Original Latinoamericano Restaurado (5.1)",
+      "restored_old_stereo_track_title": "Doblaje Original Latinoamericano Restaurado (Stereo VHS)",
+      "preserve_source_metadata": true
+    }
+  }
+}
