@@ -90,20 +90,57 @@ passes for the key opening sources. This is intentionally separate because
 
 1. Listen to `sources/07_soundtrack_main_title_opening_length.wav` against the
    current opening music to confirm timing/arrangement differences.
-2. Listen to the original Spanish “Robotech” voice in:
+2. Run soundtrack alignment/subtraction. This is now the preferred first serious
+   test for recovering SFX and narrator pieces:
+
+   ```bash
+   .venv-separation/bin/python scripts/opening_music_subtraction.py
+   ```
+
+   Outputs:
+
+   ```text
+   work/review/opening_audio_rebuild_001/music_subtraction_001/
+   ```
+
+   Review `*_residue_music_subtracted_norm.wav`,
+   `*_residue_presence_sfx_2500_12000.wav`, and
+   `*_residue_voice_band_180_4200.wav`. These are the files most likely to
+   contain recoverable non-music effects and the Spanish “Robotech” narrator.
+3. Listen to the original Spanish “Robotech” voice in:
    - `sources/05_asset_track02_spa1_original_stereo.wav`
    - `sources/08_tv_copy_ep01_intro_stereo.wav`
    - separator `Vocals` output when available.
-3. Check whether FFmpeg mid/side gives useful effects or only phase trash:
+4. Check whether FFmpeg mid/side gives useful effects or only phase trash:
    - `ffmpeg_stems/*_mid_mono.wav`
    - `ffmpeg_stems/*_side_mono.wav`
-4. Check whether `presence_sfx_2500_9000` contains recoverable transition SFX
+5. Check whether `presence_sfx_2500_9000` contains recoverable transition SFX
    without too much vocal/music bleed.
-5. If the narration voice is recoverable, process it separately using the same
+6. If the narration voice is recoverable, process it separately using the same
    conservative chain that worked for episode dialogue:
    light cleanup, melband v1 extraction, broadcast-style voice strengthening,
    and manual/repair-tool alignment if needed.
-6. Mix the recovered narration/effects over the official soundtrack Main Title.
+7. Mix the recovered narration/effects over the official soundtrack Main Title.
+
+Current review pack:
+
+```text
+work/review/opening_audio_rebuild_review_002/
+```
+
+Suggested review order:
+
+- `01_spa1_aligned_soundtrack.wav`: soundtrack conformed to the current Spanish opening.
+- `02_spa1_music_subtracted_residue_norm.wav`: current opening minus soundtrack.
+- `03_spa1_residue_presence_sfx.wav`: high-frequency SFX/presence residue.
+- `04_spa1_residue_voice_band.wav`: quick voice-band residue.
+- `05_spa1_melband_v1_vocals.wav`: known-good MelBand v1 vocals from current Spanish opening.
+- `06_spa1_melband_v1_vocals_broadcast_strong.wav`: same voice extraction with the episode-dialogue enhancement chain.
+- `07_tvcopy_music_subtracted_residue_norm.wav`: TV-copy opening minus soundtrack.
+- `08_tvcopy_melband_v1_vocals.wav`: MelBand v1 vocals from old TV-copy opening.
+- `09_tvcopy_melband_v1_vocals_broadcast_strong.wav`: TV-copy vocals with `broadcast_strong`.
+- `10_*` through `12_*`: short Apollo tests on residues/presence candidates.
+- `13_soundtrack_main_title_opening_length.wav`: clean soundtrack baseline.
 
 ## AI Restoration Candidates
 
@@ -127,6 +164,25 @@ Suggested first model order:
 4. A2SB when NVIDIA releases code/checkpoints, or if a usable implementation
    appears.
 
+Apollo setup and wrapper:
+
+```bash
+bash scripts/setup_audio_restoration_tools.sh install-apollo
+source .venv-audio-apollo/bin/activate
+```
+
+Apollo's upstream inference script expects a local checkpoint path despite using
+`JusperLee/Apollo` in the README. Use the local wrapper instead:
+
+```bash
+.venv-audio-apollo/bin/python scripts/run_apollo_restore.py \
+  --input work/review/opening_audio_rebuild_001/apollo_tests/input/spa1_residue_12s_44100.wav \
+  --output work/review/opening_audio_rebuild_001/apollo_tests/spa1_residue_12s_apollo.wav \
+  --device cuda
+```
+
+Apollo expects 44.1 kHz input; resample candidates before running it.
+
 ## FFmpeg Baseline Tools
 
 The local FFmpeg build has these useful filters:
@@ -142,4 +198,3 @@ The local FFmpeg build has these useful filters:
 These are useful as transparent baselines and diagnostics. They are not expected
 to reconstruct missing codec data, but they help reveal whether there is
 recoverable voice/effects information before running heavier AI tools.
-
