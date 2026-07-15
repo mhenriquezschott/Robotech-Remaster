@@ -28,6 +28,8 @@ def main() -> int:
     parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--expected-sr", type=int, default=44100)
+    parser.add_argument("--chunk-seconds", type=float, default=0.0, help="Process in chunks to avoid GPU OOM. 0 means whole file.")
+    parser.add_argument("--overlap-seconds", type=float, default=1.0, help="Crossfade overlap used with --chunk-seconds.")
     args = parser.parse_args()
 
     if not args.checkpoint.is_file():
@@ -50,16 +52,70 @@ def main() -> int:
         layer=6,
     ).to(device)
     model.eval()
-    with torch.no_grad():
-        restored = model(tensor)
-
-    restored_np = restored.squeeze(0).detach().cpu().numpy().T
+    if args.chunk_seconds and args.chunk_seconds > 0:
+        restored_np = restore_chunked(
+            model,
+            tensor,
+            sample_count=audio.shape[0],
+            sr=sr,
+            chunk_seconds=args.chunk_seconds,
+            overlap_seconds=args.overlap_seconds,
+        )
+    else:
+        with torch.no_grad():
+            restored = model(tensor)
+        restored_np = restored.squeeze(0).detach().cpu().numpy().T
     # Trim possible model padding back to source length.
     restored_np = restored_np[: audio.shape[0], :]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     sf.write(args.output, restored_np, sr, subtype="PCM_24")
     print(f"wrote={args.output}")
     return 0
+
+
+def restore_chunked(
+    model: torch.nn.Module,
+    tensor: torch.Tensor,
+    *,
+    sample_count: int,
+    sr: int,
+    chunk_seconds: float,
+    overlap_seconds: float,
+) -> np.ndarray:
+    chunk_samples = max(1, int(round(chunk_seconds * sr)))
+    overlap_samples = max(0, int(round(overlap_seconds * sr)))
+    if overlap_samples * 2 >= chunk_samples:
+        raise SystemExit("--overlap-seconds must be less than half of --chunk-seconds")
+    step = chunk_samples - overlap_samples
+    channels = tensor.shape[1]
+    device = tensor.device
+    output = np.zeros((sample_count, channels), dtype=np.float64)
+    weights = np.zeros((sample_count, 1), dtype=np.float64)
+    starts = list(range(0, sample_count, step))
+
+    for index, start in enumerate(starts, start=1):
+        end = min(sample_count, start + chunk_samples)
+        if end <= start:
+            continue
+        chunk = tensor[:, :, start:end]
+        with torch.no_grad():
+            restored = model(chunk)
+        restored_np = restored.squeeze(0).detach().cpu().numpy().T[: end - start, :]
+        weight = np.ones((end - start, 1), dtype=np.float64)
+        if start > 0 and overlap_samples:
+            fade_len = min(overlap_samples, end - start)
+            weight[:fade_len, 0] = np.linspace(0.0, 1.0, fade_len, endpoint=False)
+        if end < sample_count and overlap_samples:
+            fade_len = min(overlap_samples, end - start)
+            weight[-fade_len:, 0] *= np.linspace(1.0, 0.0, fade_len, endpoint=False)
+        output[start:end, :] += restored_np.astype(np.float64) * weight
+        weights[start:end, :] += weight
+        print(f"chunk {index}/{len(starts)} samples={start}:{end}", flush=True)
+        if device.type == "cuda":
+            torch.cuda.empty_cache()
+
+    weights[weights == 0] = 1.0
+    return (output / weights).astype(np.float32)
 
 
 if __name__ == "__main__":

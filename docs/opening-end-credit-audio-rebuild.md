@@ -142,6 +142,26 @@ Suggested review order:
 - `10_*` through `12_*`: short Apollo tests on residues/presence candidates.
 - `13_soundtrack_main_title_opening_length.wav`: clean soundtrack baseline.
 
+Current listening conclusion:
+
+- The soundtrack subtraction and SFX/presence residue files are diagnostics, not
+  clean extractions. They still sound too much like the original mix or like
+  frequency cuts, so they should not be treated as usable isolated effects yet.
+- The useful outputs so far are the MelBand v1 voice extractions:
+  `05_spa1_melband_v1_vocals.wav`,
+  `06_spa1_melband_v1_vocals_broadcast_strong.wav`,
+  `08_tvcopy_melband_v1_vocals.wav`, and
+  `09_tvcopy_melband_v1_vocals_broadcast_strong.wav`.
+- Short Apollo tests were not enough to assess whether effects survive in the
+  important sections, so full-length chunked Apollo candidates were added under
+  `work/review/opening_audio_rebuild_review_002/apollo_full/`.
+
+Full-length Apollo review files:
+
+- `apollo_full/02_apollo_full_spa1_residue_48k.wav`
+- `apollo_full/03_apollo_full_spa1_presence_sfx_48k.wav`
+- `apollo_full/07_apollo_full_tvcopy_residue_48k.wav`
+
 ## AI Restoration Candidates
 
 Use AI restoration only on stems where it has a plausible job:
@@ -182,6 +202,29 @@ Apollo's upstream inference script expects a local checkpoint path despite using
 ```
 
 Apollo expects 44.1 kHz input; resample candidates before running it.
+
+Full opening-length files can OOM if Apollo receives the whole waveform at
+once. Use chunked inference with overlap/crossfade:
+
+```bash
+.venv-audio-apollo/bin/python scripts/run_apollo_restore.py \
+  --input work/review/opening_audio_rebuild_review_002/apollo_full_44k/02_spa1_music_subtracted_residue_norm_44k.wav \
+  --output work/review/opening_audio_rebuild_review_002/apollo_full/02_apollo_full_spa1_residue_44k.wav \
+  --device cuda \
+  --chunk-seconds 8 \
+  --overlap-seconds 1
+```
+
+Convert the Apollo result back to 48 kHz for side-by-side review with the rest
+of the project audio:
+
+```bash
+ffmpeg -hide_banner -y \
+  -i work/review/opening_audio_rebuild_review_002/apollo_full/02_apollo_full_spa1_residue_44k.wav \
+  -ar 48000 \
+  -c:a pcm_s24le \
+  work/review/opening_audio_rebuild_review_002/apollo_full/02_apollo_full_spa1_residue_48k.wav
+```
 
 ## FFmpeg Baseline Tools
 
