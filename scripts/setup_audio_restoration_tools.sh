@@ -83,6 +83,7 @@ install_audiosr() {
   grep -Ev '^(--extra-index-url|torch==|torchvision==|torchaudio==)' "$SRC_DIR/AudioSR/requirements.txt" > "$filtered_requirements"
   "$py" -m venv "$ROOT/.venv-audio-audiosr"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install --upgrade pip wheel setuptools
+  "$ROOT/.venv-audio-audiosr/bin/python" -m pip install "setuptools<81"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -r "$filtered_requirements"
   "$ROOT/.venv-audio-audiosr/bin/python" -m pip install -e "$SRC_DIR/AudioSR" --no-deps
@@ -112,9 +113,9 @@ check_tools() {
   echo "After install, run tools from:"
   echo "  source .venv-audio-apollo/bin/activate"
   echo "  source .venv-audio-audiosr/bin/activate"
-  if [[ -x "$ROOT/.venv-audio-audiosr/bin/audiosr" ]]; then
-    "$ROOT/.venv-audio-audiosr/bin/audiosr" -h | sed -n '1,40p'
-  fi
+  echo
+  echo "Note: this check is intentionally passive. AudioSR may contact Hugging Face"
+  echo "when imported, so run model tests with the explicit commands in the docs."
 }
 
 case "${1:-}" in
