@@ -279,6 +279,7 @@ AudioSep first-pass setup and run:
 ```bash
 bash scripts/setup_audio_restoration_tools.sh clone
 bash scripts/setup_audio_restoration_tools.sh install-audiosep
+bash scripts/setup_audio_restoration_tools.sh download-audiosep-checkpoints
 ```
 
 Run the default prompt pack against the current Spanish opening:
@@ -311,6 +312,16 @@ work/review/opening_audio_audiosep_001/
 AudioSep outputs are mono at 32 kHz internally. The script resamples to 48 kHz
 and duplicates to stereo only for review/mixing convenience. Treat them as raw
 salvage candidates, not finished stereo stems.
+
+Compatibility notes:
+
+- AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and
+  `checkpoint/music_speech_audioset_epoch_15_esc_89.98.pt` inside the AudioSep
+  repo. The download command above fetches the same files used by AudioSep's
+  Colab notebook.
+- New PyTorch versions default to `torch.load(..., weights_only=True)`, which
+  breaks these older trusted checkpoints. `scripts/run_audiosep_prompts.py`
+  forces the legacy checkpoint loading mode inside that runner only.
 
 ## AI Restoration Candidates
 

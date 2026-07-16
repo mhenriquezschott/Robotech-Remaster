@@ -11,6 +11,7 @@ Usage:
   bash scripts/setup_audio_restoration_tools.sh install-apollo
   bash scripts/setup_audio_restoration_tools.sh install-audiosr
   bash scripts/setup_audio_restoration_tools.sh install-audiosep
+  bash scripts/setup_audio_restoration_tools.sh download-audiosep-checkpoints
   bash scripts/setup_audio_restoration_tools.sh check
 
 Purpose:
@@ -143,6 +144,34 @@ PY
   echo "  .venv-audio-audiosep/bin/python scripts/run_audiosep_prompts.py --input INPUT.wav --out-dir OUT --prompt 'motorcycle engine sound, no music, no speech' --device cuda --use-chunk"
 }
 
+download_audiosep_checkpoints() {
+  local checkpoint_dir="$SRC_DIR/AudioSep/checkpoint"
+  mkdir -p "$checkpoint_dir"
+  "$ROOT/.venv-audio-audiosep/bin/python" - <<PY
+from pathlib import Path
+from urllib.request import urlretrieve
+
+checkpoint_dir = Path("$checkpoint_dir")
+models = [
+    (
+        "https://huggingface.co/spaces/badayvedat/AudioSep/resolve/main/checkpoint/audiosep_base_4M_steps.ckpt",
+        checkpoint_dir / "audiosep_base_4M_steps.ckpt",
+    ),
+    (
+        "https://huggingface.co/spaces/badayvedat/AudioSep/resolve/main/checkpoint/music_speech_audioset_epoch_15_esc_89.98.pt",
+        checkpoint_dir / "music_speech_audioset_epoch_15_esc_89.98.pt",
+    ),
+]
+for url, path in models:
+    if path.exists() and path.stat().st_size > 0:
+        print("exists:", path)
+        continue
+    print("downloading:", url)
+    urlretrieve(url, path)
+    print("wrote:", path)
+PY
+}
+
 check_tools() {
   local py310_status="missing"
   if command -v python3.10 >/dev/null 2>&1; then
@@ -157,11 +186,13 @@ check_tools() {
   echo "Apollo env:   $([[ -x "$ROOT/.venv-audio-apollo/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-apollo"
   echo "AudioSR env:  $([[ -x "$ROOT/.venv-audio-audiosr/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosr"
   echo "AudioSep env: $([[ -x "$ROOT/.venv-audio-audiosep/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosep"
+  echo "AudioSep ckpt:$([[ -s "$SRC_DIR/AudioSep/checkpoint/audiosep_base_4M_steps.ckpt" && -s "$SRC_DIR/AudioSep/checkpoint/music_speech_audioset_epoch_15_esc_89.98.pt" ]] && echo found || echo missing) $SRC_DIR/AudioSep/checkpoint"
   echo
   echo "Run from repo root:"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-apollo"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosr"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosep"
+  echo "  bash scripts/setup_audio_restoration_tools.sh download-audiosep-checkpoints"
   echo
   echo "After install, run tools from:"
   echo "  source .venv-audio-apollo/bin/activate"
@@ -186,6 +217,9 @@ case "${1:-}" in
     ;;
   install-audiosep)
     install_audiosep
+    ;;
+  download-audiosep-checkpoints)
+    download_audiosep_checkpoints
     ;;
   check)
     check_tools

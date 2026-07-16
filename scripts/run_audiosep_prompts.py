@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -41,26 +42,32 @@ def main() -> int:
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--use-chunk", action="store_true")
     parser.add_argument("--sample-rate", type=int, default=48000)
-    parser.add_argument("--model-id", default="nielsr/audiosep-demo")
+    parser.add_argument("--checkpoint", type=Path, default=None)
     args = parser.parse_args()
 
     prompts = args.prompt or DEFAULT_PROMPTS
     args.out_dir.mkdir(parents=True, exist_ok=True)
     sys.path.insert(0, str(args.audiosep_root.resolve()))
+    previous_cwd = Path.cwd()
+    os.chdir(args.audiosep_root)
 
     import torch
-    from models.audiosep import AudioSep
-    from pipeline import separate_audio
-    from utils import get_ss_model
+    patch_torch_load_for_legacy_checkpoints(torch)
+    from pipeline import build_audiosep, separate_audio
 
     device = torch.device(args.device if args.device == "cpu" or torch.cuda.is_available() else "cpu")
-    ss_model = get_ss_model(str(args.audiosep_root / "config/audiosep_base.yaml"))
-    model = AudioSep.from_pretrained(args.model_id, ss_model=ss_model).eval().to(device)
+    checkpoint = args.checkpoint or args.audiosep_root / "checkpoint/audiosep_base_4M_steps.ckpt"
+    model = build_audiosep(
+        config_yaml=str(args.audiosep_root / "config/audiosep_base.yaml"),
+        checkpoint_path=str(checkpoint),
+        device=device,
+    )
+    os.chdir(previous_cwd)
 
     manifest = {
         "input": str(args.input),
         "audiosep_root": str(args.audiosep_root),
-        "model_id": args.model_id,
+        "checkpoint": str(checkpoint),
         "device": str(device),
         "use_chunk": args.use_chunk,
         "outputs": [],
@@ -117,6 +124,25 @@ def main() -> int:
     print(f"review_dir={args.out_dir}")
     print(f"windows={args.out_dir / 'windows'}")
     return 0
+
+
+def patch_torch_load_for_legacy_checkpoints(torch_module) -> None:
+    """Allow trusted legacy AudioSep checkpoints on new PyTorch versions.
+
+    PyTorch 2.6 changed `torch.load` to default to `weights_only=True`.
+    AudioSep's CLAP checkpoint contains older NumPy scalar metadata, so loading
+    it with the new default fails. These checkpoints are the official AudioSep
+    demo files downloaded by our setup script, so this runner opts into the old
+    behavior for this process only.
+    """
+
+    original_load = torch_module.load
+
+    def load_with_legacy_default(*args, **kwargs):
+        kwargs.setdefault("weights_only", False)
+        return original_load(*args, **kwargs)
+
+    torch_module.load = load_with_legacy_default
 
 
 def slugify(value: str) -> str:
