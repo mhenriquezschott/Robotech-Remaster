@@ -202,6 +202,78 @@ Review files:
 The `other` stem is the only plausible Demucs SFX candidate. Treat it as a
 listening test, not a proven extraction.
 
+User review notes from the first Demucs pass:
+
+- `review_48k/01_demucs6_other_48k.wav` sounds mostly like the music bed with
+  reduced effects, especially high-frequency music content and little bass. It
+  is useful as a candidate to subtract from the original opening, not as the
+  final SFX stem by itself.
+- `review_48k/02_demucs6_vocals_48k.wav` and
+  `review_48k/03_demucs2_vocals_48k.wav` contain the Spanish “Robotech” voice
+  around `24s-27s`. Outside that voice section, they also retain some effects,
+  including laser-gun sounds, so they may be useful for manual SFX remixing
+  after carefully cutting or cleaning the voice region.
+
+Demucs stem algebra / reverse tests:
+
+```bash
+.venv-separation/bin/python scripts/opening_demucs_stem_algebra.py
+```
+
+Outputs:
+
+```text
+work/review/opening_audio_demucs_001/stem_algebra_001/
+  01_original_minus_demucs_other_gain100_norm.wav
+  02_original_minus_demucs_other_gain125_norm.wav
+  03_original_minus_demucs_other_gain150_norm.wav
+  04_sum_all_except_other_norm.wav
+  05_vocals_plus_drums_norm.wav
+  09_laser_candidate_drums_guitar_piano_norm.wav
+  windows/
+```
+
+Review first:
+
+- `01_original_minus_demucs_other_gain100_norm.wav`: direct “reverse of
+  Demucs other” test. If `other` is mostly music, this should leave more
+  voice/SFX.
+- `02_original_minus_demucs_other_gain125_norm.wav`: same, with stronger
+  cancellation of the `other` stem.
+- `04_sum_all_except_other_norm.wav`: Demucs reconstruction using everything
+  except the music-ish `other` stem.
+- `05_vocals_plus_drums_norm.wav`: keeps the likely voice/SFX carriers while
+  avoiding the `other` music stem.
+- `09_laser_candidate_drums_guitar_piano_norm.wav`: targeted laser/effect
+  candidate from the non-vocal, non-other stems.
+- `windows/*laser_mid_023_027*` and `windows/*effects_late_055_063*`: fast
+  review clips for the two sections where effects are most obvious.
+
+If these still contain too much music, the next realistic model family is
+text/query-based audio separation, not more classic music stem separation.
+Prompts to test should be specific, for example:
+
+- `laser gun sound effects, no music, no speech`
+- `spaceship and laser blast sound effects, no music, no narration`
+- `Spanish narrator voice saying Robotech, no music`
+
+Most promising text/query separation tools to evaluate next:
+
+- AudioSep / AudioSep-DP style language-queried separation. This is the closest
+  match to “extract the laser sounds” because the model is conditioned by text,
+  not by broad music stems.
+- CLAPSep-style text/multimodal target separation if an installable checkpoint
+  is easier to run locally.
+- PromptSep-style generative sound separation/removal if the public code and
+  checkpoints are available and stable enough.
+- MMAudioSep only later, if video-conditioned extraction becomes useful; it is
+  more complex than needed for the opening-audio-only test.
+
+Do not spend more time trying plain phase subtraction as the primary path unless
+we find a soundtrack source that matches the exact opening mix. The calibration
+pass already showed the current CD soundtrack and opening bed do not null well
+enough for clean SFX recovery.
+
 ## AI Restoration Candidates
 
 Use AI restoration only on stems where it has a plausible job:
