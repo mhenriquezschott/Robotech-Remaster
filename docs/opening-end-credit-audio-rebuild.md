@@ -147,6 +147,11 @@ Current listening conclusion:
 - The soundtrack subtraction and SFX/presence residue files are diagnostics, not
   clean extractions. They still sound too much like the original mix or like
   frequency cuts, so they should not be treated as usable isolated effects yet.
+- A dedicated calibration pass confirmed this numerically: even in the first
+  `0-5s` low-effect window, the best EQ/delay subtraction only reduced the
+  residual by about `0.9 dB` versus the target. A useful null should be much
+  lower. This means the official soundtrack waveform is not close enough to the
+  opening music bed for phase subtraction to isolate SFX.
 - The useful outputs so far are the MelBand v1 voice extractions:
   `05_spa1_melband_v1_vocals.wav`,
   `06_spa1_melband_v1_vocals_broadcast_strong.wav`,
@@ -161,6 +166,41 @@ Full-length Apollo review files:
 - `apollo_full/02_apollo_full_spa1_residue_48k.wav`
 - `apollo_full/03_apollo_full_spa1_presence_sfx_48k.wav`
 - `apollo_full/07_apollo_full_tvcopy_residue_48k.wav`
+
+Subtraction calibration command:
+
+```bash
+.venv-separation/bin/python scripts/opening_subtraction_calibration.py
+```
+
+Main report:
+
+`work/review/opening_audio_subtraction_calibration_001/REPORT.md`
+
+The best current numbers still show poor cancellation:
+
+- `quiet_intro_000_005`: only about `-0.86 dB` residual reduction.
+- `effects_mid_023_025`: about `+0.81 dB` relative to target.
+- `effects_late_055_063`: about `+1.12 dB` relative to target.
+
+That is not enough separation to trust as SFX recovery.
+
+Demucs comparison:
+
+```bash
+.venv-separation/bin/demucs -n htdemucs_6s --int24 -d cuda \
+  -o work/review/opening_audio_demucs_001 \
+  work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav
+```
+
+Review files:
+
+- `work/review/opening_audio_demucs_001/review_48k/01_demucs6_other_48k.wav`
+- `work/review/opening_audio_demucs_001/review_48k/02_demucs6_vocals_48k.wav`
+- `work/review/opening_audio_demucs_001/review_48k/windows/`
+
+The `other` stem is the only plausible Demucs SFX candidate. Treat it as a
+listening test, not a proven extraction.
 
 ## AI Restoration Candidates
 

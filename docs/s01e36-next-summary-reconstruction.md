@@ -284,6 +284,11 @@ Important duration note:
   package can be reviewed without cutting off. This padding is a diagnostic
   accommodation, not proof that the source timecodes fully cover the old
   summary.
+- Later review corrected scene 05 to `15:38:27` -> `15:44:21`, which accounts
+  for the missing three-ish seconds. Even with that correction, this Southern
+  Cross source is not currently promoted because the image quality is worse
+  than the approved reconstructed source and appears to miss some border image.
+  Keep the approved `next_summary_v001` segment for now.
 
 The interpolated comparison files were generated with RIFE NCNN/Vulkan, not
 ffmpeg motion interpolation. Codex needs escalated execution for this command
