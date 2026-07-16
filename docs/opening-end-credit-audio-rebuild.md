@@ -274,6 +274,44 @@ we find a soundtrack source that matches the exact opening mix. The calibration
 pass already showed the current CD soundtrack and opening bed do not null well
 enough for clean SFX recovery.
 
+AudioSep first-pass setup and run:
+
+```bash
+bash scripts/setup_audio_restoration_tools.sh clone
+bash scripts/setup_audio_restoration_tools.sh install-audiosep
+```
+
+Run the default prompt pack against the current Spanish opening:
+
+```bash
+.venv-audio-audiosep/bin/python scripts/run_audiosep_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_audiosep_001 \
+  --device cuda \
+  --use-chunk
+```
+
+Default prompts include:
+
+- `motorcycle engine sound effect, no music, no speech`
+- `motorcycle engine revving, no music, no narrator`
+- `laser gun sound effects, no music, no speech`
+- `spaceship and laser blast sound effects, no music, no narration`
+- `Spanish narrator voice saying Robotech, no music`
+
+The runner writes full review files plus short window clips:
+
+```text
+work/review/opening_audio_audiosep_001/
+  *_audiosep_48k_stereo.wav
+  *_audiosep_48k_stereo_norm.wav
+  windows/
+```
+
+AudioSep outputs are mono at 32 kHz internally. The script resamples to 48 kHz
+and duplicates to stereo only for review/mixing convenience. Treat them as raw
+salvage candidates, not finished stereo stems.
+
 ## AI Restoration Candidates
 
 Use AI restoration only on stems where it has a plausible job:

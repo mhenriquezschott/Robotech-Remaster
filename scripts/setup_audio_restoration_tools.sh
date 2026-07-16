@@ -10,6 +10,7 @@ Usage:
   bash scripts/setup_audio_restoration_tools.sh clone
   bash scripts/setup_audio_restoration_tools.sh install-apollo
   bash scripts/setup_audio_restoration_tools.sh install-audiosr
+  bash scripts/setup_audio_restoration_tools.sh install-audiosep
   bash scripts/setup_audio_restoration_tools.sh check
 
 Purpose:
@@ -20,6 +21,8 @@ Notes:
     degraded full-mix/music-like opening stems.
   - AudioSR is versatile SR, but its own docs warn MP3-style cutoff holes can be
     difficult unless preprocessed; use it as a controlled test, not a blanket fix.
+  - AudioSep is a language-query separator. It is the first model to test for
+    opening-credit SFX such as "motorcycle engine" or "laser gun sound effects".
   - A2SB is documented as promising for bandwidth extension and inpainting, but
     NVIDIA's project page says code/checkpoints are coming soon.
 EOF
@@ -114,6 +117,32 @@ PY
   echo "  audiosr -i INPUT.wav -s OUTPUT_DIR --model_name basic -d cuda --ddim_steps 50"
 }
 
+install_audiosep() {
+  local py
+  py="$(python310)"
+  "$py" -m venv "$ROOT/.venv-audio-audiosep"
+  "$ROOT/.venv-audio-audiosep/bin/python" -m pip install --upgrade pip wheel setuptools
+  "$ROOT/.venv-audio-audiosep/bin/python" -m pip install "setuptools<81"
+  "$ROOT/.venv-audio-audiosep/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+  "$ROOT/.venv-audio-audiosep/bin/python" -m pip install \
+    "numpy<2" scipy soundfile librosa==0.10.0.post2 soxr pyyaml \
+    huggingface-hub transformers==4.28.1 lightning==2.0.0 \
+    torchlibrosa==0.1.0 panns-inference==0.1.0 h5py timm==0.3.2 \
+    ftfy regex braceexpand webdataset pandas wget tqdm
+  "$ROOT/.venv-audio-audiosep/bin/python" - <<PY
+from pathlib import Path
+import site
+repo = Path("$SRC_DIR/AudioSep").resolve()
+for sp in site.getsitepackages():
+    path = Path(sp) / "audiosep-local.pth"
+    path.write_text(str(repo) + "\\n", encoding="utf-8")
+print("AudioSep PYTHONPATH shim installed for", repo)
+PY
+  echo "AudioSep env ready: $ROOT/.venv-audio-audiosep"
+  echo "Run AudioSep prompt tests from repo root with:"
+  echo "  .venv-audio-audiosep/bin/python scripts/run_audiosep_prompts.py --input INPUT.wav --out-dir OUT --prompt 'motorcycle engine sound, no music, no speech' --device cuda --use-chunk"
+}
+
 check_tools() {
   local py310_status="missing"
   if command -v python3.10 >/dev/null 2>&1; then
@@ -124,16 +153,20 @@ check_tools() {
   echo "Python 3.10:  $py310_status"
   echo "Apollo repo:  $([[ -d "$SRC_DIR/Apollo" ]] && echo found || echo missing) $SRC_DIR/Apollo"
   echo "AudioSR repo: $([[ -d "$SRC_DIR/AudioSR" ]] && echo found || echo missing) $SRC_DIR/AudioSR"
+  echo "AudioSep repo:$([[ -d "$SRC_DIR/AudioSep" ]] && echo found || echo missing) $SRC_DIR/AudioSep"
   echo "Apollo env:   $([[ -x "$ROOT/.venv-audio-apollo/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-apollo"
   echo "AudioSR env:  $([[ -x "$ROOT/.venv-audio-audiosr/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosr"
+  echo "AudioSep env: $([[ -x "$ROOT/.venv-audio-audiosep/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosep"
   echo
   echo "Run from repo root:"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-apollo"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosr"
+  echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosep"
   echo
   echo "After install, run tools from:"
   echo "  source .venv-audio-apollo/bin/activate"
   echo "  source .venv-audio-audiosr/bin/activate"
+  echo "  source .venv-audio-audiosep/bin/activate"
   echo
   echo "Note: this check is intentionally passive. AudioSR may contact Hugging Face"
   echo "when imported, so run model tests with the explicit commands in the docs."
@@ -143,12 +176,16 @@ case "${1:-}" in
   clone)
     clone_or_update "https://github.com/JusperLee/Apollo.git" "$SRC_DIR/Apollo"
     clone_or_update "https://github.com/haoheliu/versatile_audio_super_resolution.git" "$SRC_DIR/AudioSR"
+    clone_or_update "https://github.com/Audio-AGI/AudioSep.git" "$SRC_DIR/AudioSep"
     ;;
   install-apollo)
     install_apollo
     ;;
   install-audiosr)
     install_audiosr
+    ;;
+  install-audiosep)
+    install_audiosep
     ;;
   check)
     check_tools
