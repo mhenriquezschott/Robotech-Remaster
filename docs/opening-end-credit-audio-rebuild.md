@@ -428,6 +428,108 @@ The first uses the current restored opening-credit Spanish original stereo
 track. The second uses the old TV-copy intro source, so it is the one to compare
 against the TV-copy `Robotech` narrator voice pack.
 
+SAM-Audio is the next model family to test after AudioSep-DP. Unlike the music
+stem models, it can be given both a text prompt and a time span, which is useful
+for the opening because the obvious review regions are already known:
+
+- narrator/laser overlap: about `23.8s-27.6s`
+- early laser overlap: about `23s-27s`
+- later effects/motorcycle region: about `55s-63s`
+
+SAM-Audio setup:
+
+```bash
+bash scripts/setup_audio_restoration_tools.sh clone
+bash scripts/setup_audio_restoration_tools.sh install-sam-audio
+```
+
+Requirements:
+
+- Python `3.11`
+- CUDA PyTorch installed in `.venv-audio-samaudio`
+- Hugging Face access to the requested SAM-Audio checkpoint, with local auth
+  already configured, for example by running `hf auth login`
+
+First smoke test, anchored to the narrator/laser section. Use
+`--process-start/--process-end`; a full opening-length run with
+`sam-audio-base-tv` OOMed on the RTX 5090 because the audio codec tried to
+encode the whole minute at once.
+
+```bash
+.venv-audio-samaudio/bin/python scripts/run_sam_audio_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_sam_audio_smoke_001 \
+  --model facebook/sam-audio-base-tv \
+  --prompt "motorcycle engine sound effect" \
+  --prompt "laser gun sound effects" \
+  --prompt "spanish narrator voice saying robotech" \
+  --process-start 20 \
+  --process-end 30 \
+  --anchor 23.8 27.6 \
+  --device cuda
+```
+
+Current-opening later SFX grid:
+
+```bash
+.venv-audio-samaudio/bin/python scripts/run_sam_audio_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_sam_audio_late_sfx_001 \
+  --model facebook/sam-audio-base-tv \
+  --prompt "motorcycle engine sound effect" \
+  --prompt "motorcycle engine revving" \
+  --prompt "laser gun sound effects" \
+  --prompt "spaceship and laser blast sound effects" \
+  --prompt "all non-music sound effects" \
+  --process-start 52 \
+  --process-end 66 \
+  --anchor 55 63 \
+  --device cuda
+```
+
+Old TV-copy narrator/laser grid:
+
+```bash
+.venv-audio-samaudio/bin/python scripts/run_sam_audio_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/08_tv_copy_ep01_intro_stereo.wav \
+  --out-dir work/review/opening_audio_sam_audio_tvcopy_voice_001 \
+  --model facebook/sam-audio-base-tv \
+  --prompt "spanish narrator voice saying robotech" \
+  --prompt "laser gun sound effects" \
+  --prompt "all non-music sound effects" \
+  --process-start 20 \
+  --process-end 30 \
+  --anchor 23.8 27.6 \
+  --device cuda
+```
+
+The runner writes both target and residual files:
+
+```text
+work/review/opening_audio_sam_audio_late_sfx_001/
+  *_sam_target_48k_stereo.wav
+  *_sam_target_48k_stereo_norm.wav
+  *_sam_residual_48k_stereo.wav
+  *_sam_residual_48k_stereo_norm.wav
+  windows/
+```
+
+Use `target` for the requested prompt and `residual` as the model's “everything
+else” estimate. The normalized files are only for fast listening; use raw-level
+files when deciding whether something can be mixed back into the rebuilt
+opening.
+
+Completed SAM-Audio review packs:
+
+```text
+work/review/opening_audio_sam_audio_smoke_001/
+work/review/opening_audio_sam_audio_late_sfx_001/
+work/review/opening_audio_sam_audio_tvcopy_voice_001/
+```
+
+Run these serially. Two simultaneous `sam-audio-base-tv` runs exhausted the GPU
+when both models were loaded.
+
 Compatibility notes:
 
 - AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and

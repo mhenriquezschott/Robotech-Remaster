@@ -14,6 +14,7 @@ Usage:
   bash scripts/setup_audio_restoration_tools.sh download-audiosep-checkpoints
   bash scripts/setup_audio_restoration_tools.sh install-audiosep-dp
   bash scripts/setup_audio_restoration_tools.sh download-audiosep-dp-checkpoints
+  bash scripts/setup_audio_restoration_tools.sh install-sam-audio
   bash scripts/setup_audio_restoration_tools.sh check
 
 Purpose:
@@ -29,6 +30,9 @@ Notes:
   - AudioSep-DP is the separator released with TQ-SED. TQ-SED is the event
     detection research pipeline; for our opening-credit SFX extraction tests we
     use the AudioSep-DP LASS separator directly.
+  - SAM-Audio is a newer promptable separator that supports text, visual, and
+    time-span prompts. It is the next model to test when AudioSep/AudioSep-DP
+    are not clean enough.
   - A2SB is documented as promising for bandwidth extension and inpainting, but
     NVIDIA's project page says code/checkpoints are coming soon.
 EOF
@@ -54,6 +58,25 @@ python310() {
     echo "ERROR: Python 3.10 is required for these older CUDA dependency stacks." >&2
     echo "Install one with uv or system packages, for example:" >&2
     echo "  uv python install 3.10" >&2
+    exit 1
+  fi
+}
+
+python311() {
+  if command -v python3.11 >/dev/null 2>&1; then
+    command -v python3.11
+  elif [[ -x "$ROOT/.uv-python/cpython-3.11-linux-x86_64-gnu/bin/python" ]]; then
+    echo "$ROOT/.uv-python/cpython-3.11-linux-x86_64-gnu/bin/python"
+  else
+    local candidate
+    candidate="$(find "$ROOT/.uv-python" -maxdepth 3 -path '*/cpython-3.11.*-linux-x86_64-gnu/bin/python' -executable 2>/dev/null | sort -V | tail -1 || true)"
+    if [[ -n "$candidate" ]]; then
+      echo "$candidate"
+      return
+    fi
+    echo "ERROR: Python 3.11 is required for SAM-Audio." >&2
+    echo "Install one with uv or system packages, for example:" >&2
+    echo "  uv python install 3.11" >&2
     exit 1
   fi
 }
@@ -176,6 +199,18 @@ PY
   echo "  .venv-audio-audiosepdp/bin/python scripts/run_audiosep_dp_prompts.py --input INPUT.wav --out-dir OUT --prompt 'motorcycle engine sound, no music, no speech' --device cuda"
 }
 
+install_sam_audio() {
+  local py
+  py="$(python311)"
+  "$py" -m venv "$ROOT/.venv-audio-samaudio"
+  "$ROOT/.venv-audio-samaudio/bin/python" -m pip install --upgrade pip wheel setuptools
+  "$ROOT/.venv-audio-samaudio/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+  "$ROOT/.venv-audio-samaudio/bin/python" -m pip install -e "$SRC_DIR/SAM-Audio"
+  echo "SAM-Audio env ready: $ROOT/.venv-audio-samaudio"
+  echo "Run SAM-Audio prompt tests from repo root with:"
+  echo "  .venv-audio-samaudio/bin/python scripts/run_sam_audio_prompts.py --input INPUT.wav --out-dir OUT --model facebook/sam-audio-base-tv --device cuda"
+}
+
 download_audiosep_checkpoints() {
   local checkpoint_dir="$SRC_DIR/AudioSep/checkpoint"
   mkdir -p "$checkpoint_dir"
@@ -250,10 +285,12 @@ check_tools() {
   echo "AudioSR repo: $([[ -d "$SRC_DIR/AudioSR" ]] && echo found || echo missing) $SRC_DIR/AudioSR"
   echo "AudioSep repo:$([[ -d "$SRC_DIR/AudioSep" ]] && echo found || echo missing) $SRC_DIR/AudioSep"
   echo "TQ-SED repo:  $([[ -d "$SRC_DIR/TQ-SED" ]] && echo found || echo missing) $SRC_DIR/TQ-SED"
+  echo "SAM-Audio repo:$([[ -d "$SRC_DIR/SAM-Audio" ]] && echo found || echo missing) $SRC_DIR/SAM-Audio"
   echo "Apollo env:   $([[ -x "$ROOT/.venv-audio-apollo/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-apollo"
   echo "AudioSR env:  $([[ -x "$ROOT/.venv-audio-audiosr/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosr"
   echo "AudioSep env: $([[ -x "$ROOT/.venv-audio-audiosep/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosep"
   echo "AudioSep-DP env: $([[ -x "$ROOT/.venv-audio-audiosepdp/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosepdp"
+  echo "SAM-Audio env: $([[ -x "$ROOT/.venv-audio-samaudio/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-samaudio"
   echo "AudioSep ckpt:$([[ -s "$SRC_DIR/AudioSep/checkpoint/audiosep_base_4M_steps.ckpt" && -s "$SRC_DIR/AudioSep/checkpoint/music_speech_audioset_epoch_15_esc_89.98.pt" ]] && echo found || echo missing) $SRC_DIR/AudioSep/checkpoint"
   echo "AudioSep-DP ckpt:$([[ -n "$(find "$SRC_DIR/TQ-SED/LASS_codes/checkpoints" -name '*.ckpt' -print -quit 2>/dev/null)" ]] && echo found || echo missing) $SRC_DIR/TQ-SED/LASS_codes/checkpoints"
   echo
@@ -264,12 +301,14 @@ check_tools() {
   echo "  bash scripts/setup_audio_restoration_tools.sh download-audiosep-checkpoints"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosep-dp"
   echo "  bash scripts/setup_audio_restoration_tools.sh download-audiosep-dp-checkpoints"
+  echo "  bash scripts/setup_audio_restoration_tools.sh install-sam-audio"
   echo
   echo "After install, run tools from:"
   echo "  source .venv-audio-apollo/bin/activate"
   echo "  source .venv-audio-audiosr/bin/activate"
   echo "  source .venv-audio-audiosep/bin/activate"
   echo "  source .venv-audio-audiosepdp/bin/activate"
+  echo "  source .venv-audio-samaudio/bin/activate"
   echo
   echo "Note: this check is intentionally passive. AudioSR may contact Hugging Face"
   echo "when imported, so run model tests with the explicit commands in the docs."
@@ -280,6 +319,7 @@ case "${1:-}" in
     clone_or_update "https://github.com/JusperLee/Apollo.git" "$SRC_DIR/Apollo"
     clone_or_update "https://github.com/haoheliu/versatile_audio_super_resolution.git" "$SRC_DIR/AudioSR"
     clone_or_update "https://github.com/Audio-AGI/AudioSep.git" "$SRC_DIR/AudioSep"
+    clone_or_update "https://github.com/facebookresearch/sam-audio.git" "$SRC_DIR/SAM-Audio"
     ;;
   install-apollo)
     install_apollo
@@ -292,6 +332,9 @@ case "${1:-}" in
     ;;
   install-audiosep-dp)
     install_audiosep_dp
+    ;;
+  install-sam-audio)
+    install_sam_audio
     ;;
   download-audiosep-checkpoints)
     download_audiosep_checkpoints
