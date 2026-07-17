@@ -15,6 +15,8 @@ Usage:
   bash scripts/setup_audio_restoration_tools.sh install-audiosep-dp
   bash scripts/setup_audio_restoration_tools.sh download-audiosep-dp-checkpoints
   bash scripts/setup_audio_restoration_tools.sh install-sam-audio
+  bash scripts/setup_audio_restoration_tools.sh install-flowsep
+  bash scripts/setup_audio_restoration_tools.sh download-flowsep-checkpoints
   bash scripts/setup_audio_restoration_tools.sh check
 
 Purpose:
@@ -33,6 +35,8 @@ Notes:
   - SAM-Audio is a newer promptable separator that supports text, visual, and
     time-span prompts. It is the next model to test when AudioSep/AudioSep-DP
     are not clean enough.
+  - FlowSep is a rectified-flow language-query separator. It is heavy and
+    window-based, but worth testing on short OC SFX windows after SAM-Audio.
   - A2SB is documented as promising for bandwidth extension and inpainting, but
     NVIDIA's project page says code/checkpoints are coming soon.
 EOF
@@ -47,6 +51,48 @@ clone_or_update() {
   else
     git clone "$url" "$dest"
   fi
+}
+
+patch_flowsep_repo() {
+  python3 - <<PY
+from pathlib import Path
+
+repo = Path("$SRC_DIR/FlowSep")
+
+inference = repo / "lass_inference.py"
+if inference.exists():
+    text = inference.read_text(encoding="utf-8")
+    text = text.replace(
+        '        type=bool,\\n        action=\\'store_false\\',\\n        help="saving the mixed waveform as well",',
+        '        action=\\'store_false\\',\\n        help="saving the mixed waveform as well",',
+    )
+    inference.write_text(text, encoding="utf-8")
+
+stft = repo / "src/utilities/audio/stft.py"
+if stft.exists():
+    text = stft.read_text(encoding="utf-8")
+    text = text.replace("pad_center(fft_window, filter_length)", "pad_center(fft_window, size=filter_length)")
+    text = text.replace(
+        "librosa_mel_fn(\\n            sampling_rate, filter_length, n_mel_channels, mel_fmin, mel_fmax\\n        )",
+        "librosa_mel_fn(\\n            sr=sampling_rate,\\n            n_fft=filter_length,\\n            n_mels=n_mel_channels,\\n            fmin=mel_fmin,\\n            fmax=mel_fmax,\\n        )",
+    )
+    stft.write_text(text, encoding="utf-8")
+
+encoders = repo / "src/latent_diffusion/modules/encoders/modules.py"
+if encoders.exists():
+    text = encoders.read_text(encoding="utf-8")
+    text = text.replace(
+        'os.environ["TRANSFORMERS_CACHE"]="/mnt/bn/arnold-yy-audiodata/pre_load_models"',
+        'os.environ.setdefault(\\n    "TRANSFORMERS_CACHE",\\n    os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../models/flowsep/hf_cache")),\\n)',
+    )
+    text = text.replace(
+        'self.tokenizer = AutoTokenizer.from_pretrained(self.text_encoder_name,cache_dir = "/mnt/bn/arnold-yy-audiodata/pre_load_models")\\n        self.model = T5EncoderModel.from_pretrained(self.text_encoder_name,cache_dir = "/mnt/bn/arnold-yy-audiodata/pre_load_models")',
+        'cache_dir = os.getenv("TRANSFORMERS_CACHE")\\n        self.tokenizer = AutoTokenizer.from_pretrained(self.text_encoder_name, cache_dir=cache_dir)\\n        self.model = T5EncoderModel.from_pretrained(self.text_encoder_name, cache_dir=cache_dir)',
+    )
+    encoders.write_text(text, encoding="utf-8")
+
+print("FlowSep compatibility patches checked:", repo)
+PY
 }
 
 python310() {
@@ -211,6 +257,34 @@ install_sam_audio() {
   echo "  .venv-audio-samaudio/bin/python scripts/run_sam_audio_prompts.py --input INPUT.wav --out-dir OUT --model facebook/sam-audio-base-tv --device cuda"
 }
 
+install_flowsep() {
+  local py
+  py="$(python310)"
+  patch_flowsep_repo
+  "$py" -m venv "$ROOT/.venv-audio-flowsep"
+  "$ROOT/.venv-audio-flowsep/bin/python" -m pip install --upgrade pip wheel setuptools
+  "$ROOT/.venv-audio-flowsep/bin/python" -m pip install "setuptools<81"
+  "$ROOT/.venv-audio-flowsep/bin/python" -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+  "$ROOT/.venv-audio-flowsep/bin/python" -m pip install \
+    "numpy<2" scipy soundfile librosa==0.10.2.post1 soxr pyyaml tqdm \
+    transformers==4.44.2 sentencepiece tokenizers accelerate safetensors \
+    pytorch-lightning==2.2.1 torchmetrics==1.4.1 wandb ipdb einops \
+    h5py pandas matplotlib ftfy regex omegaconf huggingface-hub==0.24.6 timm \
+    taming-transformers-rom1504 torchlibrosa torchcodec audioread decorator pooch requests pillow protobuf
+  "$ROOT/.venv-audio-flowsep/bin/python" - <<PY
+from pathlib import Path
+import site
+repo = Path("$SRC_DIR/FlowSep").resolve()
+for sp in site.getsitepackages():
+    path = Path(sp) / "flowsep-local.pth"
+    path.write_text(str(repo) + "\\n" + str(repo / "src") + "\\n", encoding="utf-8")
+print("FlowSep PYTHONPATH shim installed for", repo)
+PY
+  echo "FlowSep env ready: $ROOT/.venv-audio-flowsep"
+  echo "Run FlowSep prompt tests from repo root with:"
+  echo "  .venv-audio-flowsep/bin/python scripts/run_flowsep_prompts.py --input INPUT.wav --out-dir OUT --device cuda"
+}
+
 download_audiosep_checkpoints() {
   local checkpoint_dir="$SRC_DIR/AudioSep/checkpoint"
   mkdir -p "$checkpoint_dir"
@@ -273,6 +347,36 @@ for url, path in models:
 PY
 }
 
+download_flowsep_checkpoints() {
+  local checkpoint_dir="$SRC_DIR/FlowSep/model_logs/pretrained"
+  mkdir -p "$checkpoint_dir"
+  "$ROOT/.venv-audio-flowsep/bin/python" - <<PY
+from pathlib import Path
+from urllib.request import urlretrieve
+
+checkpoint_dir = Path("$checkpoint_dir")
+models = [
+    (
+        "https://zenodo.org/records/13869712/files/v2_100k.ckpt?download=1",
+        checkpoint_dir / "v2_100k.ckpt",
+        3_000_000_000,
+    ),
+    (
+        "https://zenodo.org/records/13869712/files/vae.ckpt?download=1",
+        checkpoint_dir / "vae.ckpt",
+        200_000_000,
+    ),
+]
+for url, path, min_size in models:
+    if path.exists() and path.stat().st_size > min_size:
+        print("exists:", path)
+        continue
+    print("downloading:", url)
+    urlretrieve(url, path)
+    print("wrote:", path, path.stat().st_size)
+PY
+}
+
 check_tools() {
   local py310_status="missing"
   if command -v python3.10 >/dev/null 2>&1; then
@@ -286,13 +390,16 @@ check_tools() {
   echo "AudioSep repo:$([[ -d "$SRC_DIR/AudioSep" ]] && echo found || echo missing) $SRC_DIR/AudioSep"
   echo "TQ-SED repo:  $([[ -d "$SRC_DIR/TQ-SED" ]] && echo found || echo missing) $SRC_DIR/TQ-SED"
   echo "SAM-Audio repo:$([[ -d "$SRC_DIR/SAM-Audio" ]] && echo found || echo missing) $SRC_DIR/SAM-Audio"
+  echo "FlowSep repo: $([[ -d "$SRC_DIR/FlowSep" ]] && echo found || echo missing) $SRC_DIR/FlowSep"
   echo "Apollo env:   $([[ -x "$ROOT/.venv-audio-apollo/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-apollo"
   echo "AudioSR env:  $([[ -x "$ROOT/.venv-audio-audiosr/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosr"
   echo "AudioSep env: $([[ -x "$ROOT/.venv-audio-audiosep/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosep"
   echo "AudioSep-DP env: $([[ -x "$ROOT/.venv-audio-audiosepdp/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-audiosepdp"
   echo "SAM-Audio env: $([[ -x "$ROOT/.venv-audio-samaudio/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-samaudio"
+  echo "FlowSep env: $([[ -x "$ROOT/.venv-audio-flowsep/bin/python" ]] && echo found || echo missing) $ROOT/.venv-audio-flowsep"
   echo "AudioSep ckpt:$([[ -s "$SRC_DIR/AudioSep/checkpoint/audiosep_base_4M_steps.ckpt" && -s "$SRC_DIR/AudioSep/checkpoint/music_speech_audioset_epoch_15_esc_89.98.pt" ]] && echo found || echo missing) $SRC_DIR/AudioSep/checkpoint"
   echo "AudioSep-DP ckpt:$([[ -n "$(find "$SRC_DIR/TQ-SED/LASS_codes/checkpoints" -name '*.ckpt' -print -quit 2>/dev/null)" ]] && echo found || echo missing) $SRC_DIR/TQ-SED/LASS_codes/checkpoints"
+  echo "FlowSep ckpt:$([[ -s "$SRC_DIR/FlowSep/model_logs/pretrained/v2_100k.ckpt" && -s "$SRC_DIR/FlowSep/model_logs/pretrained/vae.ckpt" ]] && echo found || echo missing) $SRC_DIR/FlowSep/model_logs/pretrained"
   echo
   echo "Run from repo root:"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-apollo"
@@ -302,6 +409,8 @@ check_tools() {
   echo "  bash scripts/setup_audio_restoration_tools.sh install-audiosep-dp"
   echo "  bash scripts/setup_audio_restoration_tools.sh download-audiosep-dp-checkpoints"
   echo "  bash scripts/setup_audio_restoration_tools.sh install-sam-audio"
+  echo "  bash scripts/setup_audio_restoration_tools.sh install-flowsep"
+  echo "  bash scripts/setup_audio_restoration_tools.sh download-flowsep-checkpoints"
   echo
   echo "After install, run tools from:"
   echo "  source .venv-audio-apollo/bin/activate"
@@ -309,6 +418,7 @@ check_tools() {
   echo "  source .venv-audio-audiosep/bin/activate"
   echo "  source .venv-audio-audiosepdp/bin/activate"
   echo "  source .venv-audio-samaudio/bin/activate"
+  echo "  source .venv-audio-flowsep/bin/activate"
   echo
   echo "Note: this check is intentionally passive. AudioSR may contact Hugging Face"
   echo "when imported, so run model tests with the explicit commands in the docs."
@@ -320,6 +430,8 @@ case "${1:-}" in
     clone_or_update "https://github.com/haoheliu/versatile_audio_super_resolution.git" "$SRC_DIR/AudioSR"
     clone_or_update "https://github.com/Audio-AGI/AudioSep.git" "$SRC_DIR/AudioSep"
     clone_or_update "https://github.com/facebookresearch/sam-audio.git" "$SRC_DIR/SAM-Audio"
+    clone_or_update "https://github.com/Audio-AGI/FlowSep.git" "$SRC_DIR/FlowSep"
+    patch_flowsep_repo
     ;;
   install-apollo)
     install_apollo
@@ -336,11 +448,17 @@ case "${1:-}" in
   install-sam-audio)
     install_sam_audio
     ;;
+  install-flowsep)
+    install_flowsep
+    ;;
   download-audiosep-checkpoints)
     download_audiosep_checkpoints
     ;;
   download-audiosep-dp-checkpoints)
     download_audiosep_dp_checkpoints
+    ;;
+  download-flowsep-checkpoints)
+    download_flowsep_checkpoints
     ;;
   check)
     check_tools

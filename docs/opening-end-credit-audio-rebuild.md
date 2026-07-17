@@ -546,6 +546,80 @@ Current SAM-Audio conclusion:
   more time on SAM-Audio for this opening. It appears less useful here than the
   better AudioSep prompt outputs plus manual cleanup.
 
+## FlowSep Prompt Tests
+
+FlowSep was added as the next language-query separator after AudioSep,
+AudioSep-DP/TQ-SED, and SAM-Audio. It is heavier than AudioSep because it uses a
+rectified-flow model plus Flan-T5 conditioning, and it only consumes about
+10.24 seconds of mono 16 kHz audio at a time.
+
+Setup:
+
+```bash
+bash scripts/setup_audio_restoration_tools.sh install-flowsep
+bash scripts/setup_audio_restoration_tools.sh download-flowsep-checkpoints
+```
+
+Installed assets:
+
+- Environment: `.venv-audio-flowsep/`
+- FlowSep checkpoints:
+  `soft/ai_audio_tools/src/FlowSep/model_logs/pretrained/v2_100k.ckpt` and
+  `soft/ai_audio_tools/src/FlowSep/model_logs/pretrained/vae.ckpt`
+- Transformer/VGG cache: `soft/ai_audio_tools/models/flowsep/`
+
+Local compatibility patches are applied by the setup script:
+
+- FlowSep's `--no_mixed` argparse option used an invalid `type=bool` with
+  `store_false`.
+- Old `librosa` positional calls were updated to current keyword-only calls.
+- The hardcoded `/mnt/bn/...` transformer cache was redirected to the project
+  tree.
+
+Primary 23s-35s SFX test:
+
+```bash
+.venv-audio-flowsep/bin/python scripts/run_flowsep_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_flowsep_23_35_sfx_001 \
+  --window 23 33.24 \
+  --window 24.76 35 \
+  --prompt 'motorcycle engine sound effect, no music, no speech' \
+  --prompt 'laser gun sound effects, no music, no speech' \
+  --prompt 'spaceship sound effects and laser blasts, no music, no speech' \
+  --prompt 'all non-music sound effects, no music, no speech' \
+  --prompt 'spanish narrator voice saying robotech, no music' \
+  --infer-step 12 \
+  --device cuda
+```
+
+Sanity windows:
+
+```bash
+.venv-audio-flowsep/bin/python scripts/run_flowsep_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_flowsep_sanity_windows_001 \
+  --window 0 10.24 \
+  --window 55 65.24 \
+  --prompt 'all non-music sound effects, no music, no speech' \
+  --prompt 'motorcycle engine sound effect, no music, no speech' \
+  --prompt 'laser gun sound effects, no music, no speech' \
+  --infer-step 12 \
+  --device cuda
+```
+
+Review folders:
+
+```text
+work/review/opening_audio_flowsep_smoke_001/
+work/review/opening_audio_flowsep_23_35_sfx_001/
+work/review/opening_audio_flowsep_sanity_windows_001/
+```
+
+Use `*_flowsep_48k_stereo_norm.wav` for quick listening. Use raw-level
+`*_flowsep_48k_stereo.wav` if a candidate is good enough to mix into an SFX
+assembly.
+
 Compatibility notes:
 
 - AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and
