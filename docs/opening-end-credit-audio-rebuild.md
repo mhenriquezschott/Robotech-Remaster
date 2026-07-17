@@ -524,11 +524,27 @@ Completed SAM-Audio review packs:
 ```text
 work/review/opening_audio_sam_audio_smoke_001/
 work/review/opening_audio_sam_audio_late_sfx_001/
+work/review/opening_audio_sam_audio_late_sfx_002_broad_noanchor/
 work/review/opening_audio_sam_audio_tvcopy_voice_001/
 ```
 
 Run these serially. Two simultaneous `sam-audio-base-tv` runs exhausted the GPU
 when both models were loaded.
+
+Current SAM-Audio conclusion:
+
+- The anchored prompt packs produced very weak/near-empty target clips for the
+  motorcycle-specific sounds.
+- A broader no-anchor `--predict-spans` pass produced more energy for generic
+  `sound effects` and `laser blasts`, but still did not recover a convincing
+  motorcycle/engine layer.
+- The prompt families worth checking, if any, are:
+  `work/review/opening_audio_sam_audio_late_sfx_002_broad_noanchor/01_sound_effects_sam_target_48k_stereo_norm.wav`
+  and
+  `work/review/opening_audio_sam_audio_late_sfx_002_broad_noanchor/05_laser_blasts_sam_target_48k_stereo_norm.wav`.
+- Unless those two are surprisingly useful in manual review, do not spend much
+  more time on SAM-Audio for this opening. It appears less useful here than the
+  better AudioSep prompt outputs plus manual cleanup.
 
 Compatibility notes:
 
