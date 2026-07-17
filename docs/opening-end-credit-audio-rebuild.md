@@ -371,6 +371,63 @@ published on Zenodo as `resunet_with_dprnn_16k.zip` and
 `resunet_with_dprnn_32k.zip`, about `1.5-1.6 GB` each. This needs a dedicated
 wrapper around the LASS separation code rather than the SED training scripts.
 
+Relationship between the names:
+
+- `AudioSep-DP`: the language-query source separator we want for extraction.
+- `TQ-SED`: the sound-event detection pipeline built around AudioSep-DP
+  separations. Useful later for locating events, but not required for the first
+  SFX extraction pass.
+
+AudioSep-DP setup:
+
+```bash
+bash scripts/setup_audio_restoration_tools.sh install-audiosep-dp
+bash scripts/setup_audio_restoration_tools.sh download-audiosep-dp-checkpoints
+```
+
+The first command creates:
+
+```text
+.venv-audio-audiosepdp/
+```
+
+The second downloads the 32 kHz checkpoint from Zenodo into:
+
+```text
+soft/ai_audio_tools/src/TQ-SED/LASS_codes/checkpoints/
+```
+
+Run a first prompt grid:
+
+```bash
+.venv-audio-audiosepdp/bin/python scripts/run_audiosep_dp_prompts.py \
+  --input work/review/opening_audio_rebuild_001/sources/05_asset_track02_spa1_original_stereo.wav \
+  --out-dir work/review/opening_audio_audiosep_dp_001 \
+  --device cuda
+```
+
+Review:
+
+```text
+work/review/opening_audio_audiosep_dp_001/
+work/review/opening_audio_audiosep_dp_001/windows/
+```
+
+This runner uses the AudioSep-DP separator directly with text prompts, resamples
+review files to 48 kHz stereo, and cuts the same voice/laser/SFX windows as the
+AudioSep grid.
+
+First completed review grids:
+
+```text
+work/review/opening_audio_audiosep_dp_001/
+work/review/opening_audio_audiosep_dp_tvcopy_001/
+```
+
+The first uses the current restored opening-credit Spanish original stereo
+track. The second uses the old TV-copy intro source, so it is the one to compare
+against the TV-copy `Robotech` narrator voice pack.
+
 Compatibility notes:
 
 - AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and
