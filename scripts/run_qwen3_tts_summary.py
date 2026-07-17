@@ -36,6 +36,7 @@ def main() -> int:
     parser.add_argument("--chunk-size", type=int, default=200)
     parser.add_argument("--chunk-gap", type=float, default=0.0)
     parser.add_argument("--seed-base", type=int, default=-1)
+    parser.add_argument("--exact-seed", type=int, help="Use this exact seed for the first generated take; later takes increment by 1")
     parser.add_argument("--temperature", type=float, help="Optional Qwen Base sampling temperature")
     parser.add_argument("--top-p", type=float, help="Optional Qwen Base nucleus sampling value")
     parser.add_argument("--top-k", type=int, help="Optional Qwen Base top-k sampling value")
@@ -159,11 +160,14 @@ def main() -> int:
         "chunk_size": args.chunk_size,
         "chunk_gap": args.chunk_gap,
         "seed_base": seed_base,
+        "exact_seed": args.exact_seed,
+        "seed_mode": "exact_incrementing" if args.exact_seed is not None else "formula_seed_base_plus_phrase_times_100_plus_take",
         "generation_kwargs": generation_kwargs,
         "phrases": [],
     }
     selected = read_existing_selection(args.out_dir, plan)
     phrase_audio_for_v01: list[tuple[dict[str, Any], Path]] = []
+    exact_seed_index = 0
 
     for phrase in phrases:
         phrase_number = int(phrase["number"])
@@ -190,7 +194,11 @@ def main() -> int:
         }
         print(f"[{phrase_number:02d}/{len(phrases):02d}] {phrase['text']}")
         for take_number in range(start_take_number, start_take_number + args.takes):
-            seed = seed_base + phrase_number * 100 + take_number
+            if args.exact_seed is not None:
+                seed = args.exact_seed + exact_seed_index
+                exact_seed_index += 1
+            else:
+                seed = seed_base + phrase_number * 100 + take_number
             output = phrase_dir / f"{phrase_label}_v{take_number:02d}.wav"
             set_seed(seed)
             wav, sr = synthesize_phrase(

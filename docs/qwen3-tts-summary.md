@@ -100,7 +100,7 @@ take_seed = seed_base + phrase_number * 100 + take_number
 
 So, if you want to reproduce the same take sequence later, pass the same
 `--seed-base` together with the same phrase text, model size, reference voice,
-language, and sampling parameters:
+language, and sampling parameters. This still uses the formula above:
 
 ```bash
 robotech-ai tts-summary-generate S01E05 \
@@ -125,6 +125,28 @@ This is useful when one run produces a better narrator style overall. It does
 not guarantee that a seed that worked for one phrase will be equally good for a
 different phrase, but it does let you reproduce and explore the same random
 region instead of starting from scratch each time.
+
+If you want the first generated take to use one exact seed value, bypass the
+formula with `--exact-seed`:
+
+```bash
+robotech-ai tts-summary-generate S01E05 \
+  --summary-id summary_v001 \
+  --phrases 05 \
+  --takes 1 \
+  --exact-seed 1579454332 \
+  --temperature 1.05 \
+  --top-p 0.95 \
+  --subtalker-temperature 1.05 \
+  --subtalker-top-p 0.95 \
+  --device cuda \
+  --run
+```
+
+With `--exact-seed`, the first generated take uses exactly that seed. If
+`--takes` is greater than `1`, later takes use `exact_seed + 1`,
+`exact_seed + 2`, and so on. This is the closest match to the Qwen Gradio seed
+field.
 
 ## 1. Create Or Refresh The Speech Map
 

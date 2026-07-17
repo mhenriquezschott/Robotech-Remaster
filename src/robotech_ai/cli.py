@@ -669,6 +669,7 @@ def main(argv: list[str] | None = None) -> int:
     tts_generate_p.add_argument("--chunk-size", type=int, default=200)
     tts_generate_p.add_argument("--chunk-gap", type=float, default=0.0)
     tts_generate_p.add_argument("--seed-base", type=int, default=-1)
+    tts_generate_p.add_argument("--exact-seed", type=int, help="Use this exact seed for the first generated take; later takes increment by 1")
     tts_generate_p.add_argument("--temperature", type=float, help="Optional Qwen Base sampling temperature for new takes")
     tts_generate_p.add_argument("--top-p", type=float, help="Optional Qwen Base nucleus sampling value for new takes")
     tts_generate_p.add_argument("--top-k", type=int, help="Optional Qwen Base top-k sampling value for new takes")
@@ -1279,6 +1280,7 @@ def main(argv: list[str] | None = None) -> int:
             chunk_size=args.chunk_size,
             chunk_gap=args.chunk_gap,
             seed_base=args.seed_base,
+            exact_seed=args.exact_seed,
             temperature=args.temperature,
             top_p=args.top_p,
             top_k=args.top_k,
@@ -4062,6 +4064,7 @@ def cmd_tts_summary_generate(
     chunk_size: int,
     chunk_gap: float,
     seed_base: int,
+    exact_seed: int | None,
     temperature: float | None,
     top_p: float | None,
     top_k: int | None,
@@ -4186,6 +4189,8 @@ def cmd_tts_summary_generate(
         "--device",
         device,
     ]
+    if exact_seed is not None:
+        command.extend(["--exact-seed", str(exact_seed)])
     optional_generation_args: list[tuple[str, object | None]] = [
         ("--temperature", temperature),
         ("--top-p", top_p),
@@ -4242,9 +4247,10 @@ def cmd_tts_summary_generate(
     }
     active_sampling = {key: value for key, value in sampling_settings.items() if value is not None}
     sampling_text = f" sampling={active_sampling}" if active_sampling else ""
+    seed_text = f" exact_seed:{exact_seed}" if exact_seed is not None else f" seed_base:{seed_base}"
     print(
         f"settings=language:{language} model:{model_size} takes:{takes} "
-        f"chunk_size:{chunk_size} chunk_gap:{chunk_gap}{sampling_text}"
+        f"chunk_size:{chunk_size} chunk_gap:{chunk_gap}{seed_text}{sampling_text}"
     )
     print("NUMBA_CACHE_DIR=/tmp/robotech_numba_cache " + shlex.join(command))
     if not run:

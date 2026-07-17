@@ -340,6 +340,37 @@ most of the music, that may still be useful: the voice region can be cut or
 replaced with a cleaner voice extraction, while the remaining motorcycle/laser
 fragments can feed a manually rebuilt SFX layer.
 
+Old TV-copy “Robotech” voice review pack:
+
+```text
+work/review/opening_robotech_voice_tvcopy_001/
+```
+
+Files to compare:
+
+- `01_tvcopy_source_23p8_27p6.wav`: raw TV-copy window.
+- `02_tvcopy_melband_v1_vocals_23p8_27p6.wav`: MelBand v1 vocal extraction.
+- `03_tvcopy_melband_v1_broadcast_strong_23p8_27p6.wav`: MelBand v1 plus the
+  same broadcast-style strengthening used for old Spanish dialogue.
+- `04_tvcopy_melband_v1_presence_clear_23p8_27p6.wav`: alternate clearer/presence
+  voice enhancement.
+- `05_tvcopy_audiosep_voice_plus_lasers_23p8_27p6.wav`: AudioSep voice prompt,
+  useful for comparing voice plus recovered laser texture.
+- `06_tvcopy_audiosep_non_music_voice_sfx_23p8_27p6.wav`: AudioSep non-music
+  prompt; may retain SFX around the narrator.
+- `07_tvcopy_broadcast_strong_light_denoise_23p8_27p6.wav`: light denoise on
+  the broadcast-strong voice.
+- `08_tvcopy_broadcast_strong_voice_focus_23p8_27p6.wav`: more focused voice
+  band plus dynamic normalization.
+- `09_tvcopy_broadcast_plus_audiosep_texture_23p8_27p6.wav`: broadcast-strong
+  voice with a small amount of AudioSep texture underneath.
+
+AudioSep-DP / TQ-SED is the next heavier text-query model to test. Its official
+repo is `soft/ai_audio_tools/src/TQ-SED`; pretrained AudioSep-DP checkpoints are
+published on Zenodo as `resunet_with_dprnn_16k.zip` and
+`resunet_with_dprnn_32k.zip`, about `1.5-1.6 GB` each. This needs a dedicated
+wrapper around the LASS separation code rather than the SED training scripts.
+
 Compatibility notes:
 
 - AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and
