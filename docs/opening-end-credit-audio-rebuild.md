@@ -313,6 +313,33 @@ AudioSep outputs are mono at 32 kHz internally. The script resamples to 48 kHz
 and duplicates to stereo only for review/mixing convenience. Treat them as raw
 salvage candidates, not finished stereo stems.
 
+Current AudioSep review sets:
+
+```text
+work/review/opening_audio_audiosep_001/
+  First focused prompt pass on current Spanish opening.
+
+work/review/opening_audio_audiosep_002_prompt_grid_current/
+  Broader prompt grid on current Spanish opening.
+
+work/review/opening_audio_audiosep_003_prompt_grid_tvcopy/
+  Same broader prompt grid on old TV-copy opening.
+```
+
+The second/third grids intentionally include prompts that allow speech:
+
+- `all anime sound effects, laser guns and motorcycle engine, no music`
+- `all sound effects from an old anime opening, no background music`
+- `motorcycle engine and laser gun sound effects, no music`
+- `laser guns and motorcycle engine with speech allowed, no music`
+- `all non-music sounds, speech and sound effects, no music`
+
+The working assumption after first review is that “no voice” prompts are less
+important than “no music” prompts. If AudioSep keeps the narrator but removes
+most of the music, that may still be useful: the voice region can be cut or
+replaced with a cleaner voice extraction, while the remaining motorcycle/laser
+fragments can feed a manually rebuilt SFX layer.
+
 Compatibility notes:
 
 - AudioSep expects `checkpoint/audiosep_base_4M_steps.ckpt` and

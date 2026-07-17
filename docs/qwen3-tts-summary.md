@@ -78,6 +78,54 @@ These parameters are not direct emotion controls. They increase or narrow the
 sampling space so the generated takes can vary more in delivery. Review the
 takes by ear and then edit `selected_takes.json` as usual.
 
+## Seed Reuse
+
+Every generated take stores its seed in the phrase `manifest.json`, for example:
+
+```text
+generated_audio/next_episode_summary/S01E05/summary_v001/05/manifest.json
+```
+
+The command also stores the run-level `seed_base` in:
+
+```text
+generated_audio/next_episode_summary/S01E05/summary_v001/manifest.json
+```
+
+Take seeds are deterministic:
+
+```text
+take_seed = seed_base + phrase_number * 100 + take_number
+```
+
+So, if you want to reproduce the same take sequence later, pass the same
+`--seed-base` together with the same phrase text, model size, reference voice,
+language, and sampling parameters:
+
+```bash
+robotech-ai tts-summary-generate S01E05 \
+  --summary-id summary_v001 \
+  --takes 10 \
+  --seed-base 1119848825 \
+  --temperature 1.05 \
+  --top-p 0.95 \
+  --subtalker-temperature 1.05 \
+  --subtalker-top-p 0.95 \
+  --device cuda \
+  --run
+```
+
+To derive the `seed_base` from a specific take seed:
+
+```text
+seed_base = take_seed - phrase_number * 100 - take_number
+```
+
+This is useful when one run produces a better narrator style overall. It does
+not guarantee that a seed that worked for one phrase will be equally good for a
+different phrase, but it does let you reproduce and explore the same random
+region instead of starting from scratch each time.
+
 ## 1. Create Or Refresh The Speech Map
 
 The summary planner uses the full-episode ASR speech map. If it is missing,
